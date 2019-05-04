@@ -70,9 +70,6 @@ public class SR<T> implements Serializable {
         return new SR<T>(SRCode.SUCCESS.getCode(),SRCode.SUCCESS.getDesc(),data);
     }
 
-    public static <T> SR<T> ok(String msg){
-        return new SR<T>(SRCode.SUCCESS.getCode(),msg);
-    }
 
     public static <T> SR<T> ok(String msg ,T data){
         return new SR<T>(SRCode.SUCCESS.getCode(),msg,data);

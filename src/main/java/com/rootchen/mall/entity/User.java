@@ -2,9 +2,12 @@ package com.rootchen.mall.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.rootchen.mall.common.mp3.BaseModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import javax.validation.constraints.NotBlank;
 
 /**
  * <p>
@@ -25,30 +28,50 @@ public class User extends BaseModel {
     /**
      * 用户名
      */
-    private String username;
+    @ApiModelProperty("用户名")
+    @NotBlank
+    private String userName;
 
     /**
      * 用户密码，MD5加密
      */
+    @ApiModelProperty("用户密码，MD5加密")
+    @NotBlank
     private String password;
 
+    /**
+     * 邮箱
+     */
+    @ApiModelProperty("email")
+    @NotBlank
     private String email;
 
+    /**
+     * 手机号
+     */
+    @ApiModelProperty("手机号")
+    @NotBlank
     private String phone;
 
     /**
      * 找回密码问题
      */
+    @ApiModelProperty("找回密码问题")
+    @NotBlank
     private String question;
 
     /**
      * 找回密码答案
      */
+    @ApiModelProperty("找回密码答案")
+    @NotBlank
     private String answer;
 
     /**
      * 角色0-管理员,1-普通用户
      */
+    @ApiModelProperty("角色0-管理员,1-普通用户")
+    @NotBlank
     private Integer role;
 
 

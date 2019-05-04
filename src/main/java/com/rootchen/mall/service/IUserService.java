@@ -1,7 +1,7 @@
 package com.rootchen.mall.service;
 
-import com.rootchen.mall.entity.User;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.rootchen.mall.common.SR;
+import com.rootchen.mall.params.UserLoginParams;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author LC
  * @since 2019-05-04
  */
-public interface IUserService extends IService<User> {
-
+public interface IUserService {
+    SR login(UserLoginParams userLoginParams);
 }
