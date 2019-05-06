@@ -1,7 +1,8 @@
-package com.rootchen.mall.controller;
+package com.rootchen.mall.controller.portal;
 
 
 import com.rootchen.mall.common.SR;
+import com.rootchen.mall.entity.User;
 import com.rootchen.mall.params.UserLoginParams;
 import com.rootchen.mall.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,10 @@ public class UserController {
     @RequestMapping(value = "login.do" ,method = RequestMethod.POST)
     public SR login(@RequestBody UserLoginParams userLoginParams){
         return iUserService.login(userLoginParams);
+    }
+
+    @RequestMapping(value = "register.do",method = RequestMethod.POST)
+    public SR register(@RequestBody User user){
+        return iUserService.register(user);
     }
 }

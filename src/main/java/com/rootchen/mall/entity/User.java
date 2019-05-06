@@ -1,12 +1,11 @@
 package com.rootchen.mall.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rootchen.mall.common.mp3.BaseModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.Accessors;
-
 import javax.validation.constraints.NotBlank;
 
 /**
@@ -21,6 +20,9 @@ import javax.validation.constraints.NotBlank;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("mmall_user")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class User extends BaseModel {
 
     private static final long serialVersionUID = 1L;
@@ -72,7 +74,7 @@ public class User extends BaseModel {
      */
     @ApiModelProperty("角色0-管理员,1-普通用户")
     @NotBlank
+    @JsonIgnore
     private Integer role;
-
 
 }

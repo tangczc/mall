@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rootchen.mall.mapper.UserMapper">
     <select id="selectByUserName" resultType="java.lang.String">
-        SELECT password  FROM mmall_user where user_name = #{userName}
+        SELECT password  FROM mmall_user WHERE user_name = #{userName}
+    </select>
+    <select id="checkUserName" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM mmall_user WHERE user_name = #{userName}
+    </select>
+    <select id="checkEmail" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM mmall_user WHERE user_name = #{userName}
     </select>
 </mapper>

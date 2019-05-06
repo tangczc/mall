@@ -46,7 +46,7 @@ public class SR<T> implements Serializable {
 
     //使之不再json序列化中
     @JsonIgnore
-    private boolean success(){
+    public boolean success(){
         return this.status == SRCode.SUCCESS.getCode();
     }
 
