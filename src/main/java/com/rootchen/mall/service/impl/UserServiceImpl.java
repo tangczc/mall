@@ -2,6 +2,7 @@ package com.rootchen.mall.service.impl;
 
 import com.rootchen.mall.common.Const;
 import com.rootchen.mall.common.SR;
+import com.rootchen.mall.common.SRCode;
 import com.rootchen.mall.entity.User;
 import com.rootchen.mall.mapper.UserMapper;
 import com.rootchen.mall.params.UserLoginParams;
@@ -10,6 +11,8 @@ import com.rootchen.mall.util.MD5Util;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * <p>
@@ -26,9 +29,10 @@ public class UserServiceImpl implements IUserService {
     UserMapper userMapper;
 
     @Override
-    public SR login(UserLoginParams userLoginParams) {
+    public SR login(UserLoginParams userLoginParams,HttpSession session) {
         String password = userMapper.selectByUserName(userLoginParams.getUserName());
         if (StringUtils.isNotBlank(password) && MD5Util.MD5EncodeUtf8(userLoginParams.getPassword()).equals(password)) {
+            session.setAttribute(Const.CURRENT_USER,userLoginParams.getUserName());
             return SR.ok("登陆成功");
         }
         return SR.error("用户名或者密码不正确");

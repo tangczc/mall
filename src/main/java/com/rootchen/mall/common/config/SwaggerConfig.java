@@ -1,4 +1,4 @@
-package com.rootchen.mall.common;
+package com.rootchen.mall.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,12 +19,22 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
     @Bean
-    public Docket createWebRestApi() {
+    public Docket createBackendRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("后端")
+                .groupName("后台")
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.rootchen.mall.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.rootchen.mall.controller.backend"))
+                .paths(PathSelectors.any())
+                .build();
+    }
+    @Bean
+    public Docket createProtalRestApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("前台")
+                .apiInfo(apiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.rootchen.mall.controller.portal"))
                 .paths(PathSelectors.any())
                 .build();
     }

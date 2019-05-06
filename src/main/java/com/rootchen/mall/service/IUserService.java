@@ -4,6 +4,8 @@ import com.rootchen.mall.common.SR;
 import com.rootchen.mall.entity.User;
 import com.rootchen.mall.params.UserLoginParams;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * <p>
  *  服务类
@@ -18,7 +20,7 @@ public interface IUserService {
      * @param userLoginParams
      * @return
      */
-    SR login(UserLoginParams userLoginParams);
+    SR login(UserLoginParams userLoginParams,HttpSession session);
 
     /**
      * 用户注册
