@@ -29,13 +29,22 @@ public class UserServiceImpl implements IUserService {
     UserMapper userMapper;
 
     @Override
-    public SR login(UserLoginParams userLoginParams,HttpSession session) {
-        String password = userMapper.selectByUserName(userLoginParams.getUserName());
-        if (StringUtils.isNotBlank(password) && MD5Util.MD5EncodeUtf8(userLoginParams.getPassword()).equals(password)) {
-            session.setAttribute(Const.CURRENT_USER,userLoginParams.getUserName());
-            return SR.ok("登陆成功");
+    public SR login(UserLoginParams userLoginParams, HttpSession session) {
+        User user;
+        if (userLoginParams.getUserName().contains("@")) {
+            user = userMapper.selectByEmail(userLoginParams.getUserName(), MD5Util.MD5EncodeUtf8(userLoginParams.getPassword()));
+            if (user != null) {
+                session.setAttribute(Const.CURRENT_USER, user);
+                return SR.okMsg("登陆成功");
+            }
+        } else {
+            user = userMapper.selectByUserName(userLoginParams.getUserName(), MD5Util.MD5EncodeUtf8(userLoginParams.getPassword()));
+            if (user != null) {
+                session.setAttribute(Const.CURRENT_USER, user);
+                return SR.okMsg("登陆成功");
+            }
         }
-        return SR.error("用户名或者密码不正确");
+        return SR.errorMsg("用户名或者密码不正确");
     }
 
     @Override
@@ -51,7 +60,7 @@ public class UserServiceImpl implements IUserService {
         user.setRole(Const.Role.ROLE_CUSTOMER);
         user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
         int resultCount = userMapper.insert(user);
-        if(resultCount > 0){
+        if (resultCount > 0) {
             return SR.ok("注册成功");
         }
         return SR.error("注册失败");
@@ -70,18 +79,18 @@ public class UserServiceImpl implements IUserService {
             if (Const.USERNAME.equals(type)) {
                 int resultCount = userMapper.checkUserName(str);
                 if (resultCount > 0) {
-                    return SR.error("用户名已经存在");
+                    return SR.errorMsg("用户名已经存在");
                 }
             }
             if (Const.EMAIL.equals(type)) {
                 int resultCount = userMapper.checkEmail(str);
                 if (resultCount > 0) {
-                    return SR.error("邮箱已经存在");
+                    return SR.errorMsg("邮箱已经存在");
                 }
             }
         } else {
-            return SR.error("参数错误");
+            return SR.errorMsg("参数错误");
         }
-        return SR.ok("校验成功");
+        return SR.okMsg("校验成功");
     }
 }

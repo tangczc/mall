@@ -36,6 +36,7 @@ public class UserController {
     @RequestMapping(value = "login.do", method = RequestMethod.POST)
     @ApiModelProperty(value = "登录", notes = "用户登录")
     public SR login(@RequestBody UserLoginParams userLoginParams, HttpSession session) {
+        System.out.println(userLoginParams.getUserName()+userLoginParams.getUserName().contains("@"));
         return iUserService.login(userLoginParams,session);
     }
 

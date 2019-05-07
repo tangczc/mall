@@ -13,11 +13,34 @@ import org.apache.ibatis.annotations.Param;
  * @since 2019-05-04
  */
 public interface UserMapper extends BaseMapper<User> {
+    /**
+     * 用户名登陆
+     * @param userName
+     * @param password
+     * @return
+     */
+    User selectByUserName(@Param("userName") String userName, @Param("password") String password);
 
-    String selectByUserName(@Param("userName") String userName);
+    /***
+     * 邮箱登陆
+     * @param userName
+     * @param password
+     * @return
+     */
+    User selectByEmail(@Param("email") String userName, @Param("password") String password);
 
+    /**
+     * 检查用户名是否存在
+     * @param userName
+     * @return
+     */
     Integer checkUserName(@Param("userName") String userName);
 
-    Integer checkEmail(@Param("userName") String userName);
+    /**
+     * 检查邮箱是否存在
+     * @param email
+     * @return
+     */
+    Integer checkEmail(@Param("email") String email);
 
 }

@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rootchen.mall.mapper.UserMapper">
-    <select id="selectByUserName" resultType="java.lang.String">
-        SELECT password  FROM mmall_user WHERE user_name = #{userName}
+    <select id="selectByUserName" resultType="com.rootchen.mall.entity.User">
+        SELECT *
+        FROM mmall_user
+        WHERE user_name = #{userName}
+          and password = #{password}
+    </select>
+    <select id="selectByEmail" resultType="com.rootchen.mall.entity.User">
+        SELECT *
+        FROM mmall_user
+        WHERE email = #{email}
+          and password = #{password}
     </select>
     <select id="checkUserName" resultType="java.lang.Integer">
-        SELECT COUNT(1) FROM mmall_user WHERE user_name = #{userName}
+        SELECT COUNT(1)
+        FROM mmall_user
+        WHERE user_name = #{userName}
     </select>
     <select id="checkEmail" resultType="java.lang.Integer">
-        SELECT COUNT(1) FROM mmall_user WHERE user_name = #{userName}
+        SELECT COUNT(1)
+        FROM mmall_user
+        WHERE email = #{email}
     </select>
+
 </mapper>

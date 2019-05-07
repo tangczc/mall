@@ -70,17 +70,24 @@ public class SR<T> implements Serializable {
         return new SR<T>(SRCode.SUCCESS.getCode(),SRCode.SUCCESS.getDesc(),data);
     }
 
+    public static <T> SR<T> okMsg(String msg){
+        return new SR<T>(SRCode.SUCCESS.getCode(),msg);
+    }
 
     public static <T> SR<T> ok(String msg ,T data){
         return new SR<T>(SRCode.SUCCESS.getCode(),msg,data);
     }
 
-    public static <T> SR<T> error(){
-        return new SR<T>(SRCode.ERROR.getCode(),SRCode.ERROR.getDesc());
+    public static <T> SR<T> errorMsg(String msg){
+        return new SR<T>(SRCode.ERROR.getCode(),msg);
     }
 
     public static <T> SR<T> error(T data){
         return new SR<T>(SRCode.ERROR.getCode(),SRCode.ERROR.getDesc(),data);
+    }
+
+    public static <T> SR<T> error(String msg ,T data){
+        return new SR<T>(SRCode.ERROR.getCode(),msg, data);
     }
 
     public static <T> SR<T> error(Integer code,String msg){
