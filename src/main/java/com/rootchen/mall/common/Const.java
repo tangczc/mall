@@ -24,6 +24,12 @@ public class Const {
     public interface Role {
         int ROLE_CUSTOMER = 0; //普通用户
         int ROLE_ADMIN = 1;    //管理员
+
+    }
+
+    public interface Email{
+        int EMAIL_ACTIVATE = 1; //邮箱激活
+        int EMAIL_INACTIVATE = 0; //邮箱未激活
     }
 
     public enum ProductStatusEnum {

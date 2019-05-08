@@ -1,5 +1,6 @@
 package com.rootchen.mall.common.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -18,9 +19,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
+    @Value("${swagger.enable}")
+    private boolean enableSwagger;
+
     @Bean
     public Docket createBackendRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .enable(enableSwagger)
                 .groupName("后台")
                 .apiInfo(apiInfo())
                 .select()
@@ -31,6 +36,7 @@ public class SwaggerConfig {
     @Bean
     public Docket createProtalRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .enable(enableSwagger)
                 .groupName("前台")
                 .apiInfo(apiInfo())
                 .select()

@@ -17,15 +17,22 @@ import javax.servlet.http.HttpSession;
 public interface IUserService {
     /**
      * 用户登录
-     * @param userLoginParams
+     * @param userLoginParams 用户登录信息
      * @return
      */
     SR login(UserLoginParams userLoginParams,HttpSession session);
 
     /**
      * 用户注册
-     * @param user
+     * @param user 用户信息
      * @return
      */
     SR register(User user);
+
+    /**
+     * 邮箱激活
+     * @param userName 用户名
+     * @return
+     */
+    SR emailActivate(String userName);
 }

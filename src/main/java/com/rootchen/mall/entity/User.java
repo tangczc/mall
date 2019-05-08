@@ -72,9 +72,14 @@ public class User extends BaseModel {
     /**
      * 角色0-管理员,1-普通用户
      */
-    @ApiModelProperty("角色0-管理员,1-普通用户")
+    @ApiModelProperty("角色1-管理员,0-普通用户")
     @NotBlank
     @JsonIgnore
     private Integer role;
+
+    @ApiModelProperty("邮箱激活状态:0-未激活，1-激活")
+    @NotBlank
+    private Integer status;
+
 
 }

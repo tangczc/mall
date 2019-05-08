@@ -8,6 +8,7 @@ import com.rootchen.mall.params.UserLoginParams;
 import com.rootchen.mall.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,8 +37,7 @@ public class UserController {
     @RequestMapping(value = "login.do", method = RequestMethod.POST)
     @ApiModelProperty(value = "登录", notes = "用户登录")
     public SR login(@RequestBody UserLoginParams userLoginParams, HttpSession session) {
-        System.out.println(userLoginParams.getUserName()+userLoginParams.getUserName().contains("@"));
-        return iUserService.login(userLoginParams,session);
+        return iUserService.login(userLoginParams, session);
     }
 
     @RequestMapping(value = "register.do", method = RequestMethod.POST)
@@ -46,11 +46,17 @@ public class UserController {
         return iUserService.register(user);
     }
 
-    @RequestMapping(value = "login_out.do",method = RequestMethod.GET)
-    @ApiModelProperty(value = "登出",notes = "用户登出")
-    public SR loginOut(HttpSession session){
+    @RequestMapping(value = "login_out.do", method = RequestMethod.GET)
+    @ApiModelProperty(value = "登出", notes = "用户登出")
+    public SR loginOut(HttpSession session) {
         session.removeAttribute(Const.CURRENT_USER);
         return SR.ok("退出成功");
+    }
+
+    @RequestMapping(value = "activate.do")
+    @ApiModelProperty(value = "激活" ,notes="邮箱激活")
+    public SR activate(@Param("userName") String userName){
+        return iUserService.emailActivate(userName);
     }
 
 }
