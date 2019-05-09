@@ -55,19 +55,6 @@ public class User extends BaseModel {
     @NotBlank
     private String phone;
 
-    /**
-     * 找回密码问题
-     */
-    @ApiModelProperty("找回密码问题")
-    @NotBlank
-    private String question;
-
-    /**
-     * 找回密码答案
-     */
-    @ApiModelProperty("找回密码答案")
-    @NotBlank
-    private String answer;
 
     /**
      * 角色0-管理员,1-普通用户
@@ -80,6 +67,5 @@ public class User extends BaseModel {
     @ApiModelProperty("邮箱激活状态:0-未激活，1-激活")
     @NotBlank
     private Integer status;
-
 
 }

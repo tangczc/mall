@@ -10,17 +10,17 @@ import javax.mail.MessagingException;
 public interface ISendMsgService {
     /**
      * 发送文本邮件
-     * @param to
-     * @param subject
-     * @param content
+     * @param to        发送人邮箱
+     * @param subject   发送主题
+     * @param content   发送内容
      */
     void sendSimpleMail(String to, String subject, String content);
 
     /**
      * 发送HTML邮件
-     * @param to
-     * @param subject
-     * @param content
+     * @param to        发送人邮箱
+     * @param subject   发送主题
+     * @param content   发送内容
      * @throws MessagingException
      */
     void sendHtmlMail(String to, String subject, String content) throws MessagingException;

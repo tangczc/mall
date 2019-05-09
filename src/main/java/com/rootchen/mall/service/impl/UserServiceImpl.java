@@ -1,10 +1,11 @@
 package com.rootchen.mall.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.rootchen.mall.common.Const;
 import com.rootchen.mall.common.SR;
-import com.rootchen.mall.common.SRCode;
 import com.rootchen.mall.entity.User;
 import com.rootchen.mall.mapper.UserMapper;
+import com.rootchen.mall.params.UpdateUserParams;
 import com.rootchen.mall.params.UserLoginParams;
 import com.rootchen.mall.service.ISendMsgService;
 import com.rootchen.mall.service.IUserService;
@@ -33,8 +34,14 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     ISendMsgService iSendMsgService;
 
+    /**
+     *
+     * @param userLoginParams 用户登录信息
+     * @param session
+     * @return user
+     */
     @Override
-    public SR login(UserLoginParams userLoginParams, HttpSession session) {
+    public SR<User> login(UserLoginParams userLoginParams, HttpSession session) {
         User user;
         if (userLoginParams.getUserName().contains("@")) {
             user = userMapper.selectByEmail(userLoginParams.getUserName(), MD5Util.MD5EncodeUtf8(userLoginParams.getPassword()));
@@ -52,8 +59,12 @@ public class UserServiceImpl implements IUserService {
         return SR.errorMsg("用户名或者密码不正确");
     }
 
+    /**
+     * @param user 用户信息
+     * @return String
+     */
     @Override
-    public SR register(User user) {
+    public SR<String> register(User user) {
         SR validRespons = this.checkValid(user.getUserName(), Const.USERNAME);
         if (!validRespons.success()) {
             return validRespons;
@@ -76,7 +87,7 @@ public class UserServiceImpl implements IUserService {
                                 "<a href=" +
                                 "'http://localhost:4333/api/user/activate.do?userName=" + user.getUserName() + "'>点此链接</a></h3>");
             } catch (MessagingException e) {
-                e.printStackTrace();
+                System.out.println("发送失败" + e);
             }
             return SR.okMsg("注册成功");
         }
@@ -88,7 +99,7 @@ public class UserServiceImpl implements IUserService {
      *
      * @param str  用户名
      * @param type 类型
-     * @return
+     * @return String
      */
     private SR<String> checkValid(String str, String type) {
         if (StringUtils.isNotBlank(type)) {
@@ -111,11 +122,52 @@ public class UserServiceImpl implements IUserService {
         return SR.okMsg("校验成功");
     }
 
-    public SR emailActivate(String userName){
+    /**
+     * 邮箱激活
+     * @param userName 用户名
+     * @return String
+     */
+    @Override
+    public SR<String> emailActivate(String userName){
         Integer resoultCount = userMapper.updateByUserName(userName);
         if(resoultCount > 0){
             return SR.okMsg("激活成功");
         }
         return SR.errorMsg("激活失败");
+    }
+
+    /**
+     * 发生邮箱充值密码链接
+     * @param email 邮箱
+     * @return
+     */
+    @Override
+    public SR<String> emailResetPassword(String email){
+        try {
+            iSendMsgService.sendHtmlMail(email,"密码重置","<h1>这是一份重置密码邮件如不是本人操作请忽略<br>，充值密码点击以下链接：</h1>" +
+                            "<h3><a href='http://localhost:4333/api/user/activate.do?email='" +
+                                    email +">点此链接</a></h3>");
+            return SR.okMsg("密码重置链接以发送您的邮箱请注意查收");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        return SR.errorMsg("邮箱发送失败，请查看邮箱是否填写正确");
+    }
+
+    /**
+     * 更新用户密码
+     * @param updateUserParams 用户更新信息
+     * @return
+     */
+    @Override
+    public SR<String> updatePassword(UpdateUserParams updateUserParams){
+        User user = User.builder()
+                .password(MD5Util.MD5EncodeUtf8(updateUserParams.getPassword()))
+                .build();
+        int resoultCount =  userMapper.update(user,new QueryWrapper<User>().lambda().eq(User::getEmail,updateUserParams.getEmail()));
+        if (resoultCount > 0){
+            return SR.okMsg("密码修改成功");
+        }
+        return SR.errorMsg("密码修改失败");
     }
 }

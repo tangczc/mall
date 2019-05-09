@@ -2,6 +2,7 @@ package com.rootchen.mall.service;
 
 import com.rootchen.mall.common.SR;
 import com.rootchen.mall.entity.User;
+import com.rootchen.mall.params.UpdateUserParams;
 import com.rootchen.mall.params.UserLoginParams;
 
 import javax.servlet.http.HttpSession;
@@ -35,4 +36,18 @@ public interface IUserService {
      * @return
      */
     SR emailActivate(String userName);
+
+    /**
+     * 发送邮箱重置密码链接
+     * @param email 邮箱
+     * @return
+     */
+    SR emailResetPassword(String email);
+
+    /**
+     * 更新用户密码
+     * @param updateUserParams 用户更新信息
+     * @return
+     */
+    SR updatePassword(UpdateUserParams updateUserParams);
 }

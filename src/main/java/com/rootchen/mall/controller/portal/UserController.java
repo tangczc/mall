@@ -4,17 +4,13 @@ package com.rootchen.mall.controller.portal;
 import com.rootchen.mall.common.Const;
 import com.rootchen.mall.common.SR;
 import com.rootchen.mall.entity.User;
+import com.rootchen.mall.params.UpdateUserParams;
 import com.rootchen.mall.params.UserLoginParams;
 import com.rootchen.mall.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -53,10 +49,21 @@ public class UserController {
         return SR.ok("退出成功");
     }
 
-    @RequestMapping(value = "activate.do")
+    @RequestMapping(value = "activate.do",method = RequestMethod.GET)
     @ApiModelProperty(value = "激活" ,notes="邮箱激活")
-    public SR activate(@Param("userName") String userName){
+    public SR activate(@RequestParam("userName") String userName){
         return iUserService.emailActivate(userName);
     }
 
+    @RequestMapping(value = "reset_password.do",method = RequestMethod.GET)
+    @ApiModelProperty(value = "重置",notes = "发送邮箱密码重置链接")
+    public SR resetPassword(@RequestParam("email") String email){
+        return iUserService.emailResetPassword(email);
+    }
+
+    @RequestMapping(value = "update_password.do",method = RequestMethod.POST)
+    @ApiModelProperty(value = "更新",notes = "更新密码")
+    public SR updatePassword(@RequestBody UpdateUserParams updateUserParams){
+        return iUserService.updatePassword(updateUserParams);
+    }
 }

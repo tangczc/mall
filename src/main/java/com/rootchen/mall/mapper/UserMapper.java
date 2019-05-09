@@ -43,6 +43,11 @@ public interface UserMapper extends BaseMapper<User> {
      */
     Integer checkEmail(@Param("email") String email);
 
+    /**
+     * 邮箱激活
+     * @param userName
+     * @return
+     */
     Integer updateByUserName(@Param("userName") String userName);
 
 }
