@@ -1,5 +1,6 @@
 package com.rootchen.mall.controller.backend;
 
+import com.rootchen.mall.common.Const;
 import com.rootchen.mall.common.SR;
 import com.rootchen.mall.entity.User;
 import com.rootchen.mall.params.UserLoginParams;
@@ -34,7 +35,7 @@ public class UserManagerController {
             return SR.errorMsg("用户名密码输入有误");
         }
         User user = (User) sr.getData();
-        if (user.getRole() != 1){
+        if (user.getRole() != Const.Role.ROLE_ADMIN){
             return SR.errorMsg("请用管理员账户登录");
         }
         return sr;
