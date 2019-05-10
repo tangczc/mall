@@ -1,39 +1,30 @@
-package com.rootchen.mall.entity;
+package com.rootchen.mall.params;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rootchen.mall.common.mp3.BaseModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
-import lombok.experimental.Accessors;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.NotBlank;
 
 /**
- * <p>
- * 
- * </p>
- *
- * @author LC
- * @since 2019-05-04
+ * @description: 用户注册
+ * @author: LiChen
+ * @create: 2019-05-10 10:38
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
-@TableName("mmall_user")
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class User extends BaseModel {
-
-    private static final long serialVersionUID = 1L;
-
+public class RegisterUserParams {
     @ApiModelProperty("用户名")
     @NotBlank
     private String userName;
 
     @ApiModelProperty("用户密码，MD5加密")
     @NotBlank
-    @JsonIgnore
     private String password;
 
     @ApiModelProperty("email")
@@ -44,13 +35,8 @@ public class User extends BaseModel {
     @NotBlank
     private String phone;
 
-    @ApiModelProperty("角色1-管理员,0-普通用户")
-    @NotBlank
-    @JsonIgnore
-    private Integer role;
-
     @ApiModelProperty("邮箱激活状态:0-未激活，1-激活")
     @NotBlank
+    @JsonIgnore
     private Integer status;
-
 }

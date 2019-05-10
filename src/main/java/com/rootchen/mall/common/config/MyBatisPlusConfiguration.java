@@ -1,4 +1,4 @@
-package com.rootchen.mall.common.mp3;
+package com.rootchen.mall.common.config;
 
 import com.baomidou.mybatisplus.core.injector.ISqlInjector;
 import com.baomidou.mybatisplus.extension.injector.LogicSqlInjector;

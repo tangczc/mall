@@ -2,6 +2,7 @@ package com.rootchen.mall.service;
 
 import com.rootchen.mall.common.SR;
 import com.rootchen.mall.entity.User;
+import com.rootchen.mall.params.RegisterUserParams;
 import com.rootchen.mall.params.UpdateUserParams;
 import com.rootchen.mall.params.UserLoginParams;
 
@@ -25,10 +26,10 @@ public interface IUserService {
 
     /**
      * 用户注册
-     * @param user 用户信息
+     * @param registerUserParams 用户注册信息
      * @return
      */
-    SR register(User user);
+    SR register(RegisterUserParams registerUserParams);
 
     /**
      * 邮箱激活
@@ -50,4 +51,18 @@ public interface IUserService {
      * @return
      */
     SR updatePassword(UpdateUserParams updateUserParams);
+
+    /**
+     * 更新用户信息
+     * @param updateUserParams 用户更新信息
+     * @return
+     */
+    SR updateUserInfo(UpdateUserParams updateUserParams,HttpSession session);
+
+    /**
+     * 查询个人信息
+     * @param session
+     * @return
+     */
+    SR getUserInformation(HttpSession session);
 }

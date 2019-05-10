@@ -4,11 +4,13 @@ package com.rootchen.mall.controller.portal;
 import com.rootchen.mall.common.Const;
 import com.rootchen.mall.common.SR;
 import com.rootchen.mall.entity.User;
+import com.rootchen.mall.params.RegisterUserParams;
 import com.rootchen.mall.params.UpdateUserParams;
 import com.rootchen.mall.params.UserLoginParams;
 import com.rootchen.mall.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,39 +33,51 @@ public class UserController {
     IUserService iUserService;
 
     @RequestMapping(value = "login.do", method = RequestMethod.POST)
-    @ApiModelProperty(value = "登录", notes = "用户登录")
+    @ApiOperation(value = "登录", notes = "用户登录")
     public SR login(@RequestBody UserLoginParams userLoginParams, HttpSession session) {
         return iUserService.login(userLoginParams, session);
     }
 
     @RequestMapping(value = "register.do", method = RequestMethod.POST)
-    @ApiModelProperty(value = "注册", notes = "用户注册")
-    public SR register(@RequestBody User user) {
-        return iUserService.register(user);
+    @ApiOperation(value = "注册", notes = "用户注册")
+    public SR register(@RequestBody RegisterUserParams registerUserParams) {
+        return iUserService.register(registerUserParams);
     }
 
     @RequestMapping(value = "login_out.do", method = RequestMethod.GET)
-    @ApiModelProperty(value = "登出", notes = "用户登出")
+    @ApiOperation(value = "登出", notes = "用户登出")
     public SR loginOut(HttpSession session) {
         session.removeAttribute(Const.CURRENT_USER);
         return SR.ok("退出成功");
     }
 
     @RequestMapping(value = "activate.do",method = RequestMethod.GET)
-    @ApiModelProperty(value = "激活" ,notes="邮箱激活")
+    @ApiOperation(value = "激活" ,notes="邮箱激活")
     public SR activate(@RequestParam("userName") String userName){
         return iUserService.emailActivate(userName);
     }
 
     @RequestMapping(value = "reset_password.do",method = RequestMethod.GET)
-    @ApiModelProperty(value = "重置",notes = "发送邮箱密码重置链接")
+    @ApiOperation(value = "重置",notes = "发送邮箱密码重置链接")
     public SR resetPassword(@RequestParam("email") String email){
         return iUserService.emailResetPassword(email);
     }
 
     @RequestMapping(value = "update_password.do",method = RequestMethod.POST)
-    @ApiModelProperty(value = "更新",notes = "更新密码")
+    @ApiOperation(value = "更新",notes = "更新密码")
     public SR updatePassword(@RequestBody UpdateUserParams updateUserParams){
         return iUserService.updatePassword(updateUserParams);
+    }
+
+    @RequestMapping(value = "update_user_info.do",method = RequestMethod.POST)
+    @ApiOperation(value = "更新",notes = "更新用户信息")
+    public SR updateUserInfo(@RequestBody UpdateUserParams updateUserParams,HttpSession session){
+        return iUserService.updateUserInfo(updateUserParams,session);
+    }
+
+    @RequestMapping(value = "get_user_information.do",method = RequestMethod.POST)
+    @ApiOperation(value = "查询",notes = "查询当前用户信息")
+    public SR getUserInformation(HttpSession session){
+        return iUserService.getUserInformation(session);
     }
 }
