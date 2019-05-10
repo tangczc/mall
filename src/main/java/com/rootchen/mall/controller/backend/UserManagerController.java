@@ -30,14 +30,14 @@ public class UserManagerController {
     @RequestMapping(value = "login.do", method = RequestMethod.POST)
     @ApiOperation(value = "登录", notes = "用户登录")
     public SR login(@RequestBody UserLoginParams userLoginParams, HttpSession session) {
-        SR sr =  iUserService.login(userLoginParams, session);
-        if(!sr.success()){
-            return SR.errorMsg("用户名密码输入有误");
+        SR response =  iUserService.login(userLoginParams, session);
+        if(!response.success()){
+            return response;
         }
-        User user = (User) sr.getData();
+        User user = (User) response.getData();
         if (user.getRole() != Const.Role.ROLE_ADMIN){
             return SR.errorMsg("请用管理员账户登录");
         }
-        return sr;
+        return response;
     }
 }
