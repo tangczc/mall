@@ -6,7 +6,6 @@ import com.rootchen.mall.common.SRCode;
 import com.rootchen.mall.entity.Category;
 import com.rootchen.mall.mapper.CategoryMapper;
 import com.rootchen.mall.service.ICategoryService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,8 +47,8 @@ public class CategoryServiceImpl implements ICategoryService {
                 .parentId(parentId)
                 .status(true)
                 .build();
-        int resoultCount = categoryMapper.insert(category);
-        if (resoultCount > 0){
+        int resultCount = categoryMapper.insert(category);
+        if (resultCount > 0){
             return SR.okMsg("添加成功");
         }
         return SR.errorMsg("添加失败");
@@ -69,13 +68,13 @@ public class CategoryServiceImpl implements ICategoryService {
             return sr;
         }
         if (StringUtils.isBlank(categoryName) || categoryId == null) {
-            return SR.errorMsg("产品名称或更新id不能为空");
+            return SR.errorMsg("产品名称或id不能为空");
         }
         Category category = new Category();
         category.setName(categoryName);
         category.setId(categoryId);
-        int resoultCount = categoryMapper.updateById(category);
-        if (resoultCount > 0){
+        int resultCount = categoryMapper.updateById(category);
+        if (resultCount > 0){
             return SR.okMsg("修改成功");
         }
         return SR.errorMsg("修改失败");

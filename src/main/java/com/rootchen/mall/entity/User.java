@@ -6,6 +6,7 @@ import com.rootchen.mall.common.mp3.BaseModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
+
 import javax.validation.constraints.NotBlank;
 
 /**

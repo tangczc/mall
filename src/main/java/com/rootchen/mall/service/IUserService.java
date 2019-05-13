@@ -1,7 +1,6 @@
 package com.rootchen.mall.service;
 
 import com.rootchen.mall.common.SR;
-import com.rootchen.mall.entity.User;
 import com.rootchen.mall.params.RegisterUserParams;
 import com.rootchen.mall.params.UpdateUserParams;
 import com.rootchen.mall.params.UserLoginParams;

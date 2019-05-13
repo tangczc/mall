@@ -1,10 +1,10 @@
 package com.rootchen.mall.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.rootchen.mall.common.CheckUser;
 import com.rootchen.mall.common.Const;
 import com.rootchen.mall.common.SR;
 import com.rootchen.mall.common.SRCode;
-import com.rootchen.mall.common.CheckUser;
 import com.rootchen.mall.entity.User;
 import com.rootchen.mall.mapper.UserMapper;
 import com.rootchen.mall.params.RegisterUserParams;
@@ -69,13 +69,13 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public SR<String> register(RegisterUserParams registerUserParams) {
-        SR validRespons = this.checkValid(registerUserParams.getUserName(), Const.USERNAME);
-        if (!validRespons.success()) {
-            return validRespons;
+        SR validResponse = this.checkValid(registerUserParams.getUserName(), Const.USERNAME);
+        if (!validResponse.success()) {
+            return validResponse;
         }
-        validRespons = this.checkValid(registerUserParams.getEmail(), Const.EMAIL);
-        if (!validRespons.success()) {
-            return validRespons;
+        validResponse = this.checkValid(registerUserParams.getEmail(), Const.EMAIL);
+        if (!validResponse.success()) {
+            return validResponse;
         }
 
         User user = User.builder()
@@ -111,8 +111,8 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public SR<String> emailActivate(String userName){
-        Integer resoultCount = userMapper.updateByUserName(userName);
-        if(resoultCount > 0){
+        Integer resultCount = userMapper.updateByUserName(userName);
+        if(resultCount > 0){
             return SR.okMsg("激活成功");
         }
         return SR.errorMsg("激活失败");
@@ -146,8 +146,8 @@ public class UserServiceImpl implements IUserService {
         User user = User.builder()
                 .password(MD5Util.MD5EncodeUtf8(updateUserParams.getPassword()))
                 .build();
-        int resoultCount = userMapper.update(user,new QueryWrapper<User>().lambda().eq(User::getEmail,updateUserParams.getEmail()));
-        if (resoultCount > 0){
+        int resultCount = userMapper.update(user,new QueryWrapper<User>().lambda().eq(User::getEmail,updateUserParams.getEmail()));
+        if (resultCount > 0){
             return SR.okMsg("密码修改成功");
         }
         return SR.errorMsg("密码修改失败");
@@ -164,17 +164,17 @@ public class UserServiceImpl implements IUserService {
         if (!CheckUser.isLoginSuccess(session)){
             return SR.error(SRCode.NEED_LOGIN.getCode(),"请先登录");
         }
-       SR checkValidRespons =  checkValid(updateUserParams.getUserName(),Const.USERNAME);
-        if (!checkValidRespons.success()){
-            return checkValidRespons;
+       SR checkValidResponse =  checkValid(updateUserParams.getUserName(),Const.USERNAME);
+        if (!checkValidResponse.success()){
+            return checkValidResponse;
         }
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         user.setUserName(updateUserParams.getUserName());
         if (updateUserParams.getPassword() != null){
             user.setPassword(MD5Util.MD5EncodeUtf8(updateUserParams.getPassword()));
         }
-        int resoultCount = userMapper.updateById(user);
-        if(resoultCount > 0){
+        int resultCount = userMapper.updateById(user);
+        if(resultCount > 0){
             session.setAttribute(Const.CURRENT_USER,user);
             return SR.okMsg("更新成功");
         }

@@ -3,13 +3,11 @@ package com.rootchen.mall.controller.portal;
 
 import com.rootchen.mall.common.Const;
 import com.rootchen.mall.common.SR;
-import com.rootchen.mall.entity.User;
 import com.rootchen.mall.params.RegisterUserParams;
 import com.rootchen.mall.params.UpdateUserParams;
 import com.rootchen.mall.params.UserLoginParams;
 import com.rootchen.mall.service.IUserService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
