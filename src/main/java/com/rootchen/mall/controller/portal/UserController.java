@@ -25,12 +25,12 @@ import javax.servlet.http.HttpSession;
  * @since 2019-05-04
  */
 @RestController
-@RequestMapping("/api/user")
-@Api(value = "/api/user", description = "用户信息")
+@RequestMapping("/api/user/")
+@Api(value = "/api/user/", description = "用户信息")
 public class UserController {
 
     @Autowired
-    IUserService iUserService;
+    private IUserService iUserService;
 
     @RequestMapping(value = "login.do", method = RequestMethod.POST)
     @ApiOperation(value = "登录", notes = "用户登录")

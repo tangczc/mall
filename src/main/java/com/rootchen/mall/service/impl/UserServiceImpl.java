@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.rootchen.mall.common.Const;
 import com.rootchen.mall.common.SR;
 import com.rootchen.mall.common.SRCode;
-import com.rootchen.mall.common.UserLgoin;
+import com.rootchen.mall.common.CheckUser;
 import com.rootchen.mall.entity.User;
 import com.rootchen.mall.mapper.UserMapper;
 import com.rootchen.mall.params.RegisterUserParams;
@@ -161,7 +161,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public SR<Object> updateUserInfo(UpdateUserParams updateUserParams,HttpSession session){
-        if (!UserLgoin.isLoginSuccess(session)){
+        if (!CheckUser.isLoginSuccess(session)){
             return SR.error(SRCode.NEED_LOGIN.getCode(),"请先登录");
         }
        SR checkValidRespons =  checkValid(updateUserParams.getUserName(),Const.USERNAME);
@@ -188,7 +188,7 @@ public class UserServiceImpl implements IUserService {
      * @return
      */
     public SR<Object> getUserInformation(HttpSession session){
-        if (!UserLgoin.isLoginSuccess(session)){
+        if (!CheckUser.isLoginSuccess(session)){
             return SR.error(SRCode.NEED_LOGIN.getCode(),"请先登录");
         }
         User user = (User)session.getAttribute(Const.CURRENT_USER);

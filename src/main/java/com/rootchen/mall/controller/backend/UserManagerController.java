@@ -21,11 +21,11 @@ import javax.servlet.http.HttpSession;
  * @create: 2019-05-10 15:22
  */
 @RestController
-@RequestMapping("/api/manage_user")
-@Api(value = "/api/manage_user", description = "管理员用户信息")
+@RequestMapping("/api/manage_user/")
+@Api(value = "/api/manage_user/", description = "管理员用户信息")
 public class UserManagerController {
     @Autowired
-    IUserService iUserService;
+    private IUserService iUserService;
 
     @RequestMapping(value = "login.do", method = RequestMethod.POST)
     @ApiOperation(value = "登录", notes = "用户登录")
