@@ -26,4 +26,5 @@ public class BaseModel extends Model {
     @JsonIgnore
     @TableField(fill = FieldFill.UPDATE)
     private Date updateTime;
+
 }

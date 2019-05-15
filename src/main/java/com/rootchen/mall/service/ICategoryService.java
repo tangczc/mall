@@ -15,19 +15,38 @@ import javax.servlet.http.HttpSession;
 public interface ICategoryService {
     /**
      * 添加商品分类
+     *
      * @param session
      * @param categoryName 商品名称
-     * @param parentId  父类id
+     * @param parentId     父类id
      * @return
      */
     SR addCategory(HttpSession session, String categoryName, Integer parentId);
 
     /**
      * 更新商品分类名称
+     *
      * @param session
-     * @param categoryId    商品分类id
-     * @param categoryName  商品分类名称
+     * @param categoryId   商品分类id
+     * @param categoryName 商品分类名称
      * @return
      */
-    SR updateCategoryName(HttpSession session,Long categoryId,String categoryName);
+    SR updateCategoryName(HttpSession session, Long categoryId, String categoryName);
+
+    /**
+     * 查询父类下同一级子节点的信息
+     *
+     * @param parentId 父节点id
+     * @return
+     */
+    SR getCategory(HttpSession session, Integer parentId);
+
+    /**
+     * 递归查询父节点下的所有子节点信息
+     *
+     * @param session session
+     * @param categoryId 父节点id
+     * @return
+     */
+    SR getDeepCategory(HttpSession session, Long categoryId);
 }

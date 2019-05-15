@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rootchen.mall.mapper.CategoryMapper">
-
+    <resultMap id="BaseResultMap" type="com.rootchen.mall.entity.Category"></resultMap>
+    <sql id="Base_Column_List">
+        id,
+        parent_id,
+        name,
+        status,
+        sort_order,
+        create_time,
+        update_time,
+        deleted
+    </sql>
+    <select id="selectByParentId" parameterType="int" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mmall_category
+        where parent_id = #{parentId} and deleted = 0
+    </select>
 </mapper>
