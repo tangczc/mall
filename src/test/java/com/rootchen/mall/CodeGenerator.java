@@ -57,11 +57,11 @@ public class CodeGenerator {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://192.168.95.128:3306/mmall?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8");
+        dsc.setUrl("jdbc:mysql://192.168.1.106:3306/db_mall?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("0306");
+        dsc.setPassword("12qwaszx");
         mpg.setDataSource(dsc);
 
         // 包配置
@@ -117,7 +117,7 @@ public class CodeGenerator {
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setSuperEntityColumns("id", "update_time", "create_time", "deleted");
         strategy.setControllerMappingHyphenStyle(true);
-        strategy.setTablePrefix("mmall_");
+        strategy.setTablePrefix("mall_");
         mpg.setStrategy(strategy);
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());
         mpg.execute();

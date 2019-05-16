@@ -15,7 +15,7 @@
         update_time
     </sql>
     <update id="updateByUserName">
-        UPDATE mmall_user
+        UPDATE mall_user
         SET status = 1
         WHERE user_name = #{userName}
           and deleted = 0
@@ -23,7 +23,7 @@
     <select id="selectByUserName" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM mmall_user
+        FROM mall_user
         WHERE user_name = #{userName}
         and password = #{password}
         and deleted = 0
@@ -31,20 +31,20 @@
     <select id="selectByEmail" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM mmall_user
+        FROM mall_user
         WHERE email = #{email}
         and password = #{password}
         and deleted = 0
     </select>
     <select id="checkUserName" resultType="java.lang.Integer">
         SELECT COUNT(1)
-        FROM mmall_user
+        FROM mall_user
         WHERE user_name = #{userName}
           and deleted = 0
     </select>
     <select id="checkEmail" resultType="java.lang.Integer">
         SELECT COUNT(1)
-        FROM mmall_user
+        FROM mall_user
         WHERE email = #{email}
           and deleted = 0
     </select>

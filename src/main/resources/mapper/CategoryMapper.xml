@@ -15,7 +15,7 @@
     <select id="selectByParentId" parameterType="int" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from mmall_category
+        from mall_category
         where parent_id = #{parentId} and deleted = 0
     </select>
 </mapper>
