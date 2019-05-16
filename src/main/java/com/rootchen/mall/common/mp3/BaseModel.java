@@ -5,8 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.util.Date;
 
@@ -16,7 +15,6 @@ public class BaseModel extends Model {
     private Long id;
 
     @TableLogic
-    @JsonIgnore
     private Integer deleted;
 
     @JsonIgnore

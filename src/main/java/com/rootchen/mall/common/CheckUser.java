@@ -37,4 +37,20 @@ public class CheckUser {
         }
         return false;
     }
+
+    /**
+     * 检查用户登录状态以及是否是管理员
+     *
+     * @param session
+     * @return
+     */
+    public static SR<String> checkUser(HttpSession session) {
+        if (!CheckUser.isLoginSuccess(session)) {
+            return SR.error(SRCode.NEED_LOGIN.getCode(), "请登录");
+        }
+        if (!CheckUser.isAdmin(session)) {
+            return SR.errorMsg("请用管理员身份操作");
+        }
+        return SR.okMsg("校验成功");
+    }
 }

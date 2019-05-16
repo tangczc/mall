@@ -16,6 +16,11 @@ import java.util.List;
  */
 public interface CategoryMapper extends BaseMapper<Category> {
 
+    /**
+     * 查找同一个父节点下的所有子节点
+     * @param parentId 父节点id
+     * @return
+     */
     List<Category> selectByParentId(@Param("parentId") Integer parentId);
 
 }

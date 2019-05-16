@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rootchen.mall.mapper.ProductMapper">
+    <resultMap id="BaseResultMap" type="com.rootchen.mall.entity.Product"></resultMap>
+    <sql id="Base_Column_List">
+        id,
+        category_id,
+        name,
+        subtitle,
+        main_image,
+        sub_images,
+        detail,
+        price,
+        stock,
+        status,
+        create_time,
+        update_time,
+        deleted
+    </sql>
+
+</mapper>

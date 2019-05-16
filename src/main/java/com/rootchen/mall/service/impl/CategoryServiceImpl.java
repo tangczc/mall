@@ -43,7 +43,7 @@ public class CategoryServiceImpl implements ICategoryService {
      */
     @Override
     public SR<String> addCategory(HttpSession session, String categoryName, Integer parentId) {
-        SR sr = checkUser(session);
+        SR sr = CheckUser.checkUser(session);
         if (!sr.success()) {
             return sr;
         }
@@ -72,7 +72,7 @@ public class CategoryServiceImpl implements ICategoryService {
      */
     @Override
     public SR<String> updateCategoryName(HttpSession session, Long categoryId, String categoryName) {
-        SR sr = checkUser(session);
+        SR sr = CheckUser.checkUser(session);
         if (!sr.success()) {
             return sr;
         }
@@ -97,7 +97,7 @@ public class CategoryServiceImpl implements ICategoryService {
      */
     @Override
     public SR<List<Category>> getCategory(HttpSession session, Integer parentId) {
-        SR sr = checkUser(session);
+        SR sr = CheckUser.checkUser(session);
         if (!sr.success()) {
             return sr;
         }
@@ -119,7 +119,7 @@ public class CategoryServiceImpl implements ICategoryService {
      */
     @Override
     public SR getDeepCategory(HttpSession session, Long categoryId) {
-        SR sr = checkUser(session);
+        SR sr = CheckUser.checkUser(session);
         if (!sr.success()) {
             return sr;
         }
@@ -134,21 +134,6 @@ public class CategoryServiceImpl implements ICategoryService {
         return SR.ok(categoryIdList);
     }
 
-    /**
-     * 检查用户登录状态
-     *
-     * @param session
-     * @return
-     */
-    private SR<String> checkUser(HttpSession session) {
-        if (!CheckUser.isLoginSuccess(session)) {
-            return SR.error(SRCode.NEED_LOGIN.getCode(), "请登录");
-        }
-        if (!CheckUser.isAdmin(session)) {
-            return SR.errorMsg("请用管理员身份操作");
-        }
-        return SR.okMsg("校验成功");
-    }
 
     /**
      * 递归查询子节点
