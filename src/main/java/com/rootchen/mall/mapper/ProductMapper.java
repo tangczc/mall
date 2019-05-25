@@ -1,10 +1,8 @@
 package com.rootchen.mall.mapper;
 
-import com.rootchen.mall.entity.Product;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.rootchen.mall.entity.Product;
 
 /**
  * <p>
@@ -21,6 +19,6 @@ public interface ProductMapper extends BaseMapper<Product> {
      *
      * @return
      */
-    List<Product> getProductList();
+    Page<Product> getProductList(Page page);
 
 }

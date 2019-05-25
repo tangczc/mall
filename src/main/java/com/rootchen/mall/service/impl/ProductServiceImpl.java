@@ -1,7 +1,7 @@
 package com.rootchen.mall.service.impl;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rootchen.mall.common.CheckUser;
 import com.rootchen.mall.common.SR;
 import com.rootchen.mall.entity.Product;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  * <p>
@@ -101,15 +100,14 @@ public class ProductServiceImpl implements IProductService {
      * @return
      */
     @Override
-    public SR<PageInfo<Product>> getProductList(HttpSession session, Integer pageNum, Integer pageSize) {
+    public SR<IPage> getProductList(HttpSession session, Integer pageNum, Integer pageSize) {
         SR sr = CheckUser.checkUser(session);
         if (!sr.success()) {
             return sr;
         }
-        PageHelper.startPage(pageNum, pageSize);
-        List<Product> productList = productMapper.getProductList();
-        PageInfo<Product> pageInfo = new PageInfo(productList);
-        return SR.ok(pageInfo);
+        Page<Product> productPage = new Page<>(pageNum,pageSize);
+        IPage<Product> productIPage = productMapper.getProductList(productPage);
+        return SR.ok(productIPage);
     }
 
 

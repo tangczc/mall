@@ -19,7 +19,7 @@
     </sql>
     <select id="getProductList" resultType="com.rootchen.mall.entity.Product">
         select <include refid="Base_Column_List"/>
-        from mall_product
+        from mall_product where deleted = 0
     </select>
 
 </mapper>
