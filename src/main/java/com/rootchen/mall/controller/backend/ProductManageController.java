@@ -40,7 +40,7 @@ public class ProductManageController {
 
     @RequestMapping(value = "product_list.do",method = RequestMethod.GET)
     @ApiOperation(value = "分页",notes = "商品列表(分页)")
-    public SR productList(HttpSession session, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize){
+    public SR productList(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum, @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
         return iProductService.getProductList(session,pageNum,pageSize);
     }
 }
