@@ -16,6 +16,7 @@ public class MyBatisPlusConfiguration {
 
     /**
      * 逻辑删除
+     *
      * @return
      */
     @Bean
@@ -36,7 +37,7 @@ public class MyBatisPlusConfiguration {
      * SQL执行效率插件
      */
     @Bean
-    @Profile({"dev","test"})// 设置 dev test 环境开启
+    @Profile({"dev", "test"})// 设置 dev test 环境开启
     public PerformanceInterceptor performanceInterceptor() {
         return new PerformanceInterceptor();
     }
