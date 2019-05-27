@@ -3,8 +3,7 @@
 <mapper namespace="com.rootchen.mall.mapper.CategoryMapper">
     <resultMap id="BaseResultMap" type="com.rootchen.mall.entity.Category"></resultMap>
     <sql id="Base_Column_List">
-        id
-        ,
+        id,
         parent_id,
         name,
         status,
