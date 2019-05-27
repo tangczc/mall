@@ -3,8 +3,7 @@
 <mapper namespace="com.rootchen.mall.mapper.UserMapper">
     <resultMap id="BaseResultMap" type="com.rootchen.mall.entity.User"></resultMap>
     <sql id="Base_Column_List">
-        id
-        ,
+        id,
         user_name,
         password,
         email,
