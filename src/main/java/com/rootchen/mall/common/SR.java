@@ -24,21 +24,21 @@ public class SR<T> implements Serializable {
     //响应数据
     private T data;
 
-    private SR(Integer status) {
+    private SR(Integer status){
         this.status = status;
     }
 
-    private SR(Integer status, String msg) {
+    private SR(Integer status,String msg){
         this.status = status;
         this.msg = msg;
     }
 
-    private SR(Integer status, T data) {
+    private SR(Integer status,T data){
         this.data = data;
         this.status = status;
     }
 
-    private SR(Integer status, String msg, T data) {
+    private SR(Integer status,String msg,T data){
         this.status = status;
         this.data = data;
         this.msg = msg;
@@ -46,52 +46,52 @@ public class SR<T> implements Serializable {
 
     //使之不再json序列化中
     @JsonIgnore
-    public boolean success() {
+    public boolean success(){
         return this.status == SRCode.SUCCESS.getCode();
     }
 
-    public Integer getStatus() {
+    public Integer getStatus(){
         return status;
     }
 
-    public T getData() {
+    public T getData(){
         return data;
     }
 
-    public String getMsg() {
+    public String getMsg(){
         return msg;
     }
 
-    public static <T> SR<T> ok() {
+    public static <T> SR<T> ok(){
         return new SR<T>(SRCode.SUCCESS.getCode());
     }
 
-    public static <T> SR<T> ok(T data) {
-        return new SR<T>(SRCode.SUCCESS.getCode(), SRCode.SUCCESS.getDesc(), data);
+    public static <T> SR<T> ok(T data){
+        return new SR<T>(SRCode.SUCCESS.getCode(),SRCode.SUCCESS.getDesc(),data);
     }
 
-    public static <T> SR<T> okMsg(String msg) {
-        return new SR<T>(SRCode.SUCCESS.getCode(), msg);
+    public static <T> SR<T> okMsg(String msg){
+        return new SR<T>(SRCode.SUCCESS.getCode(),msg);
     }
 
-    public static <T> SR<T> ok(String msg, T data) {
-        return new SR<T>(SRCode.SUCCESS.getCode(), msg, data);
+    public static <T> SR<T> ok(String msg ,T data){
+        return new SR<T>(SRCode.SUCCESS.getCode(),msg,data);
     }
 
-    public static <T> SR<T> errorMsg(String msg) {
-        return new SR<T>(SRCode.ERROR.getCode(), msg);
+    public static <T> SR<T> errorMsg(String msg){
+        return new SR<T>(SRCode.ERROR.getCode(),msg);
     }
 
-    public static <T> SR<T> error(T data) {
-        return new SR<T>(SRCode.ERROR.getCode(), SRCode.ERROR.getDesc(), data);
+    public static <T> SR<T> error(T data){
+        return new SR<T>(SRCode.ERROR.getCode(),SRCode.ERROR.getDesc(),data);
     }
 
-    public static <T> SR<T> error(String msg, T data) {
-        return new SR<T>(SRCode.ERROR.getCode(), msg, data);
+    public static <T> SR<T> error(String msg ,T data){
+        return new SR<T>(SRCode.ERROR.getCode(),msg, data);
     }
 
-    public static <T> SR<T> error(Integer code, String msg) {
-        return new SR<T>(code, msg);
+    public static <T> SR<T> error(Integer code,String msg){
+        return new SR<T>(code,msg);
     }
 
 }
