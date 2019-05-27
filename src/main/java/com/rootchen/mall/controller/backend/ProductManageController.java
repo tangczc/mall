@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author LC
@@ -21,26 +21,26 @@ import javax.servlet.http.HttpSession;
  */
 @RestController
 @RequestMapping("/api/manage_product/")
-@Api(value = "/api/manage_product/",description = "产品信息")
+@Api(value = "/api/manage_product/", description = "产品信息")
 public class ProductManageController {
     @Autowired
     private IProductService iProductService;
 
-    @RequestMapping(value = "save_product.do",method = RequestMethod.POST)
-    @ApiOperation(value = "添加",notes = "添加商品")
-    public SR saveProduct(HttpSession session, @RequestBody Product product){
-        return iProductService.addOrUpdateProduct(session,product);
+    @RequestMapping(value = "save_product.do", method = RequestMethod.POST)
+    @ApiOperation(value = "添加", notes = "添加商品")
+    public SR saveProduct(HttpSession session, @RequestBody Product product) {
+        return iProductService.addOrUpdateProduct(session, product);
     }
 
-    @RequestMapping(value = "set_product_status",method = RequestMethod.GET)
-    @ApiOperation(value = "修改",notes = "修改产品上下架")
-    public SR setProductStatus(HttpSession session, @RequestParam("productId") Long productId,@RequestParam("status")Integer status){
-        return iProductService.setProductStatus(session,productId,status);
+    @RequestMapping(value = "set_product_status", method = RequestMethod.GET)
+    @ApiOperation(value = "修改", notes = "修改产品上下架")
+    public SR setProductStatus(HttpSession session, @RequestParam("productId") Long productId, @RequestParam("status") Integer status) {
+        return iProductService.setProductStatus(session, productId, status);
     }
 
-    @RequestMapping(value = "product_list.do",method = RequestMethod.GET)
-    @ApiOperation(value = "分页",notes = "商品列表(分页)")
-    public SR productList(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum, @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
-        return iProductService.getProductList(session,pageNum,pageSize);
+    @RequestMapping(value = "product_list.do", method = RequestMethod.GET)
+    @ApiOperation(value = "分页", notes = "商品列表(分页)")
+    public SR productList(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+        return iProductService.getProductList(session, pageNum, pageSize);
     }
 }

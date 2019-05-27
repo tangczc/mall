@@ -27,9 +27,10 @@ public class SendMsgServiceImpl implements ISendMsgService {
 
     /**
      * 发送文本邮件
-     * @param to        发送人邮箱
-     * @param subject   发送主题
-     * @param content   发送内容
+     *
+     * @param to      发送人邮箱
+     * @param subject 发送主题
+     * @param content 发送内容
      */
     @Override
     public void sendSimpleMail(String to, String subject, String content) {
@@ -43,9 +44,10 @@ public class SendMsgServiceImpl implements ISendMsgService {
 
     /**
      * 发送HTML邮件
-     * @param to        发送人邮箱
-     * @param subject   发送主题
-     * @param content   发送内容
+     *
+     * @param to      发送人邮箱
+     * @param subject 发送主题
+     * @param content 发送内容
      * @throws MessagingException
      */
     @Override

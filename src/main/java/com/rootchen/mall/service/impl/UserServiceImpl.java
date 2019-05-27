@@ -39,6 +39,7 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * 登录
+     *
      * @param userLoginParams 用户登录信息
      * @param session
      * @return user
@@ -64,6 +65,7 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * 注册
+     *
      * @param registerUserParams 用户注册信息
      * @return String
      */
@@ -90,8 +92,8 @@ public class UserServiceImpl implements IUserService {
         if (resultCount > 0) {
             try {
                 iSendMsgService.sendHtmlMail(user.getEmail(),
-                        "慕课商城","<h1>" +
-                                "来自"+ user.getUserName() +"的账号激活邮件，激活请点击一下链接：" +
+                        "慕课商城", "<h1>" +
+                                "来自" + user.getUserName() + "的账号激活邮件，激活请点击一下链接：" +
                                 "</h1>" +
                                 "<h3>" +
                                 "<a href=" +
@@ -106,13 +108,14 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * 邮箱激活
+     *
      * @param userName 用户名
      * @return String
      */
     @Override
-    public SR<String> emailActivate(String userName){
+    public SR<String> emailActivate(String userName) {
         Integer resultCount = userMapper.updateByUserName(userName);
-        if(resultCount > 0){
+        if (resultCount > 0) {
             return SR.okMsg("激活成功");
         }
         return SR.errorMsg("激活失败");
@@ -120,15 +123,16 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * 发生邮箱充值密码链接
+     *
      * @param email 邮箱
      * @return String
      */
     @Override
-    public SR<String> emailResetPassword(String email){
+    public SR<String> emailResetPassword(String email) {
         try {
-            iSendMsgService.sendHtmlMail(email,"密码重置","<h1>这是一份重置密码邮件如不是本人操作请忽略<br>，充值密码点击以下链接：</h1>" +
-                            "<h3><a href='http://localhost:4333/api/user/activate.do?email='" +
-                                    email +">点此链接</a></h3>");
+            iSendMsgService.sendHtmlMail(email, "密码重置", "<h1>这是一份重置密码邮件如不是本人操作请忽略<br>，充值密码点击以下链接：</h1>" +
+                    "<h3><a href='http://localhost:4333/api/user/activate.do?email='" +
+                    email + ">点此链接</a></h3>");
             return SR.okMsg("密码重置链接以发送您的邮箱请注意查收");
         } catch (MessagingException e) {
             e.printStackTrace();
@@ -138,16 +142,17 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * 更新用户密码
+     *
      * @param updateUserParams 用户更新信息
      * @return String
      */
     @Override
-    public SR<String> updatePassword(UpdateUserParams updateUserParams){
+    public SR<String> updatePassword(UpdateUserParams updateUserParams) {
         User user = User.builder()
                 .password(MD5Util.MD5EncodeUtf8(updateUserParams.getPassword()))
                 .build();
-        int resultCount = userMapper.update(user,new QueryWrapper<User>().lambda().eq(User::getEmail,updateUserParams.getEmail()));
-        if (resultCount > 0){
+        int resultCount = userMapper.update(user, new QueryWrapper<User>().lambda().eq(User::getEmail, updateUserParams.getEmail()));
+        if (resultCount > 0) {
             return SR.okMsg("密码修改成功");
         }
         return SR.errorMsg("密码修改失败");
@@ -155,27 +160,28 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * 更新用户信息
+     *
      * @param updateUserParams 用户更新信息
-     * @param session HttpSession
+     * @param session          HttpSession
      * @return Object
      */
     @Override
-    public SR<Object> updateUserInfo(UpdateUserParams updateUserParams,HttpSession session){
-        if (!CheckUser.isLoginSuccess(session)){
-            return SR.error(SRCode.NEED_LOGIN.getCode(),"请先登录");
+    public SR<Object> updateUserInfo(UpdateUserParams updateUserParams, HttpSession session) {
+        if (!CheckUser.isLoginSuccess(session)) {
+            return SR.error(SRCode.NEED_LOGIN.getCode(), "请先登录");
         }
-       SR checkValidResponse =  checkValid(updateUserParams.getUserName(),Const.USERNAME);
-        if (!checkValidResponse.success()){
+        SR checkValidResponse = checkValid(updateUserParams.getUserName(), Const.USERNAME);
+        if (!checkValidResponse.success()) {
             return checkValidResponse;
         }
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         user.setUserName(updateUserParams.getUserName());
-        if (updateUserParams.getPassword() != null){
+        if (updateUserParams.getPassword() != null) {
             user.setPassword(MD5Util.MD5EncodeUtf8(updateUserParams.getPassword()));
         }
         int resultCount = userMapper.updateById(user);
-        if(resultCount > 0){
-            session.setAttribute(Const.CURRENT_USER,user);
+        if (resultCount > 0) {
+            session.setAttribute(Const.CURRENT_USER, user);
             return SR.okMsg("更新成功");
         }
         return SR.errorMsg("更新失败");
@@ -184,19 +190,20 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * 查询当前用户信息
+     *
      * @param session
      * @return
      */
-    public SR<Object> getUserInformation(HttpSession session){
-        if (!CheckUser.isLoginSuccess(session)){
-            return SR.error(SRCode.NEED_LOGIN.getCode(),"请先登录");
+    public SR<Object> getUserInformation(HttpSession session) {
+        if (!CheckUser.isLoginSuccess(session)) {
+            return SR.error(SRCode.NEED_LOGIN.getCode(), "请先登录");
         }
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
         user = userMapper.selectById(user.getId());
-        if (user != null){
-            return SR.ok("查询成功",user);
+        if (user != null) {
+            return SR.ok("查询成功", user);
         }
-        return SR.error("该用户不存在",null);
+        return SR.error("该用户不存在", null);
     }
 
     /**

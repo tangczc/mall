@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author LC
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/product/")
-@Api(value = "/api/product/",description = "前台产品信息")
+@Api(value = "/api/product/", description = "前台产品信息")
 public class ProductController {
 
 }

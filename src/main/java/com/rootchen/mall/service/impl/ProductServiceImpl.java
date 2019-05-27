@@ -105,7 +105,7 @@ public class ProductServiceImpl implements IProductService {
         if (!sr.success()) {
             return sr;
         }
-        Page<Product> productPage = new Page<>(pageNum,pageSize);
+        Page<Product> productPage = new Page<>(pageNum, pageSize);
         IPage<Product> productIPage = productMapper.getProductList(productPage);
         return SR.ok(productIPage);
     }

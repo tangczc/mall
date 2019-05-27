@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author LC

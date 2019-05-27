@@ -43,12 +43,12 @@ public class CategoryManageController {
     @RequestMapping(value = "get_category.do", method = RequestMethod.GET)
     @ApiOperation(value = "查询", notes = "查询父节点下同一级子节点信息")
     public SR getChildrenCategory(HttpSession session, @RequestParam(value = "parentId", defaultValue = "0") Integer parentId) {
-        return iCategoryService.getCategory(session,parentId);
+        return iCategoryService.getCategory(session, parentId);
     }
 
-    @RequestMapping(value = "get_deep_category.do",method = RequestMethod.GET)
-    @ApiOperation(value = "查询",notes = "递归查询父节点下的所有子节点信息")
-    public SR getDeepCategory(HttpSession session, @RequestParam(value = "categoryId",defaultValue = "0")Long categoryId){
-        return iCategoryService.getDeepCategory(session,categoryId);
+    @RequestMapping(value = "get_deep_category.do", method = RequestMethod.GET)
+    @ApiOperation(value = "查询", notes = "递归查询父节点下的所有子节点信息")
+    public SR getDeepCategory(HttpSession session, @RequestParam(value = "categoryId", defaultValue = "0") Long categoryId) {
+        return iCategoryService.getDeepCategory(session, categoryId);
     }
 }

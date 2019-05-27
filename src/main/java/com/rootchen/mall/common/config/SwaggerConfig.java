@@ -33,6 +33,7 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build();
     }
+
     @Bean
     public Docket createProtalRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -44,6 +45,7 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build();
     }
+
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("慕课网商城后端接口文档")

@@ -15,6 +15,7 @@ import org.apache.ibatis.annotations.Param;
 public interface UserMapper extends BaseMapper<User> {
     /**
      * 用户名登陆
+     *
      * @param userName
      * @param password
      * @return
@@ -31,6 +32,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     /**
      * 检查用户名是否存在
+     *
      * @param userName
      * @return
      */
@@ -38,6 +40,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     /**
      * 检查邮箱是否存在
+     *
      * @param email
      * @return
      */
@@ -45,6 +48,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     /**
      * 邮箱激活
+     *
      * @param userName
      * @return
      */
