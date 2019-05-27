@@ -3,8 +3,7 @@
 <mapper namespace="com.rootchen.mall.mapper.ProductMapper">
     <resultMap id="BaseResultMap" type="com.rootchen.mall.entity.Product"></resultMap>
     <sql id="Base_Column_List">
-        id
-        ,
+        id,
         category_id,
         name,
         subtitle,
@@ -19,8 +18,7 @@
         deleted
     </sql>
     <select id="getProductList" resultType="com.rootchen.mall.entity.Product">
-        select
-        <include refid="Base_Column_List"/>
+        select <include refid="Base_Column_List"/>
         from mall_product where deleted = 0
     </select>
 
