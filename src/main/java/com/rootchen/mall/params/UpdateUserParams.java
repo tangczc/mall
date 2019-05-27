@@ -28,7 +28,7 @@ public class UpdateUserParams {
     @NotBlank
     private String userName;
 
-    @ApiModelProperty("email")
+    @ApiModelProperty("邮箱")
     @NotBlank
     private String email;
 
