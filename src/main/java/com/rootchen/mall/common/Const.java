@@ -27,7 +27,7 @@ public class Const {
 
     }
 
-    public interface Email{
+    public interface Email {
         int EMAIL_ACTIVATE = 1; //邮箱激活
         int EMAIL_INACTIVATE = 0; //邮箱未激活
     }
