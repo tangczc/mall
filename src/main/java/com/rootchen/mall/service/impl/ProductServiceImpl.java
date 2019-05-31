@@ -158,7 +158,7 @@ public class ProductServiceImpl implements IProductService {
                 .updateTime(product.getUpdateTime())
                 .build();
 
-        productDetailVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","ftp://192.168.1.106/ftp/"));
+        productDetailVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","ftp://192.168.1.106"));
         Category category = categoryMapper.selectByCategoryId(product.getCategoryId());
         if (category == null){
             productDetailVo.setParentCategoryId(0);
