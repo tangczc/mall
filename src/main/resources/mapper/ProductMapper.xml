@@ -21,5 +21,9 @@
         select <include refid="Base_Column_List"/>
         from mall_product where deleted = 0
     </select>
+    <select id="selectProductId" resultType="com.rootchen.mall.entity.Product">
+        select <include refid="Base_Column_List"/>
+        from mall_product where id = #{id} and deleted = 0
+    </select>
 
 </mapper>

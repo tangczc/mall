@@ -18,4 +18,8 @@
         from mall_category
         where parent_id = #{parentId} and deleted = 0
     </select>
+    <select id="selectByCategoryId" resultType="com.rootchen.mall.entity.Category">
+        select <include refid="Base_Column_List"/>
+        from mall_category where id = #{id} and deleted = 0
+    </select>
 </mapper>

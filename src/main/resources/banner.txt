@@ -8,5 +8,5 @@
  |==| _ /\   | /==/-  /\ - \ |==|- `-._  |==|- `-._
  /==/  / / , / \==\ _.\=\.-' /==/ - , ,/ /==/ - , ,/
  `--`./  `--`   `--`         `--`-----'  `--`-----'
- ${AnsiColor.BRIGHT_CYAN}
+ ${AnsiColor.BLUE}
  :: Spring Boot ::        (v2.1.4.RELEASE) Edit By LiChen

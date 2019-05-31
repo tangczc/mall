@@ -43,4 +43,11 @@ public class ProductManageController {
     public SR productList(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         return iProductService.getProductList(session, pageNum, pageSize);
     }
+
+    @RequestMapping(value = "get_product_detail",method = RequestMethod.GET)
+    @ApiOperation(value = "查找",notes = "查找产品详情")
+    public SR getProductDetail(HttpSession session,@RequestParam("productId") Long productId){
+        return iProductService.getProductDetail(session,productId);
+    }
+
 }

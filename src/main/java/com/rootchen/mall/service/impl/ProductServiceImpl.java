@@ -4,9 +4,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rootchen.mall.common.CheckUser;
 import com.rootchen.mall.common.SR;
+import com.rootchen.mall.entity.Category;
 import com.rootchen.mall.entity.Product;
+import com.rootchen.mall.mapper.CategoryMapper;
 import com.rootchen.mall.mapper.ProductMapper;
 import com.rootchen.mall.service.IProductService;
+import com.rootchen.mall.util.PropertiesUtil;
+import com.rootchen.mall.vo.ProductDetailVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +31,8 @@ public class ProductServiceImpl implements IProductService {
     @Autowired
     private ProductMapper productMapper;
 
+    @Autowired
+    private CategoryMapper categoryMapper;
     /**
      * 添加商品
      *
@@ -110,5 +116,57 @@ public class ProductServiceImpl implements IProductService {
         return SR.ok(productIPage);
     }
 
+    /**
+     * 查找产品详情
+     *
+     * @param session session
+     * @param productId 产品id
+     * @return
+     */
+    @Override
+    public SR<ProductDetailVo> getProductDetail(HttpSession session, Long productId){
+        SR sr = CheckUser.checkUser(session);
+        if (!sr.success()){
+            return sr;
+        }
+        Product product = productMapper.selectProductId(productId);
+        if (product == null){
+            return SR.errorMsg("产品已经下架或者删除");
+        }
+        ProductDetailVo productDetailVo = getProductDetailVo(product);
+        return SR.ok(productDetailVo);
+    }
+
+    /**
+     * 获取ProductVo用户前端展示
+     * @param product 产品实例
+     * @return
+     */
+    private ProductDetailVo getProductDetailVo(Product product){
+        ProductDetailVo productDetailVo = ProductDetailVo.builder()
+                .id(product.getId())
+                .subtitle(product.getSubtitle())
+                .categoryId(product.getCategoryId())
+                .detail(product.getDetail())
+                .name(product.getName())
+                .price(product.getPrice())
+                .mainImage(product.getMainImage())
+                .subImages(product.getSubImages())
+                .status(product.getStatus())
+                .stock(product.getStock())
+                .createTime(product.getCreateTime())
+                .updateTime(product.getUpdateTime())
+                .build();
+
+        productDetailVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","ftp://192.168.1.106/ftp/"));
+        Category category = categoryMapper.selectByCategoryId(product.getCategoryId());
+        if (category == null){
+            productDetailVo.setParentCategoryId(0);
+        }else {
+            productDetailVo.setParentCategoryId(category.getParentId());
+        }
+
+        return productDetailVo;
+    }
 
 }

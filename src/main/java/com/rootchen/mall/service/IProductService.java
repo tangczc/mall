@@ -43,4 +43,13 @@ public interface IProductService {
      * @return
      */
     SR getProductList(HttpSession session, Integer pageNum, Integer pageSize);
+
+    /**
+     * 查找产品详情
+     *
+     * @param session session
+     * @param productId 产品id
+     * @return
+     */
+    SR getProductDetail(HttpSession session,Long productId);
 }

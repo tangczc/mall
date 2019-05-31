@@ -1,7 +1,7 @@
 package com.rootchen.mall.mapper;
 
-import com.rootchen.mall.entity.Category;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.rootchen.mall.entity.Category;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -23,5 +23,12 @@ public interface CategoryMapper extends BaseMapper<Category> {
      * @return
      */
     List<Category> selectByParentId(@Param("parentId") Integer parentId);
+
+    /**
+     * 查询父节点
+     * @param id 子节点id
+     */
+
+    Category selectByCategoryId(@Param("id") Integer id);
 
 }
