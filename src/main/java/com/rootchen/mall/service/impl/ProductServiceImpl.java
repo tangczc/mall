@@ -11,11 +11,13 @@ import com.rootchen.mall.mapper.ProductMapper;
 import com.rootchen.mall.service.IProductService;
 import com.rootchen.mall.util.PropertiesUtil;
 import com.rootchen.mall.vo.ProductDetailVo;
+import com.rootchen.mall.vo.ProductListVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * <p>
@@ -33,6 +35,7 @@ public class ProductServiceImpl implements IProductService {
 
     @Autowired
     private CategoryMapper categoryMapper;
+
     /**
      * 添加商品
      *
@@ -111,26 +114,30 @@ public class ProductServiceImpl implements IProductService {
         if (!sr.success()) {
             return sr;
         }
-        Page<Product> productPage = new Page<>(pageNum, pageSize);
-        IPage<Product> productIPage = productMapper.getProductList(productPage);
+        Page<ProductListVo> productPage = new Page<>(pageNum, pageSize);
+        List<ProductListVo> productListVos = productMapper.getProductList(productPage);
+        for (ProductListVo productListVo: productListVos) {
+            productListVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
+        }
+        IPage<ProductListVo> productIPage = productPage.setRecords(productListVos);
         return SR.ok(productIPage);
     }
 
     /**
      * 查找产品详情
      *
-     * @param session session
+     * @param session   session
      * @param productId 产品id
      * @return
      */
     @Override
-    public SR<ProductDetailVo> getProductDetail(HttpSession session, Long productId){
+    public SR<ProductDetailVo> getProductDetail(HttpSession session, Long productId) {
         SR sr = CheckUser.checkUser(session);
-        if (!sr.success()){
+        if (!sr.success()) {
             return sr;
         }
         Product product = productMapper.selectProductId(productId);
-        if (product == null){
+        if (product == null) {
             return SR.errorMsg("产品已经下架或者删除");
         }
         ProductDetailVo productDetailVo = getProductDetailVo(product);
@@ -139,10 +146,11 @@ public class ProductServiceImpl implements IProductService {
 
     /**
      * 获取ProductVo用户前端展示
+     *
      * @param product 产品实例
      * @return
      */
-    private ProductDetailVo getProductDetailVo(Product product){
+    private ProductDetailVo getProductDetailVo(Product product) {
         ProductDetailVo productDetailVo = ProductDetailVo.builder()
                 .id(product.getId())
                 .subtitle(product.getSubtitle())
@@ -158,11 +166,11 @@ public class ProductServiceImpl implements IProductService {
                 .updateTime(product.getUpdateTime())
                 .build();
 
-        productDetailVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","ftp://192.168.1.106"));
+        productDetailVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "ftp://192.168.1.106"));
         Category category = categoryMapper.selectByCategoryId(product.getCategoryId());
-        if (category == null){
+        if (category == null) {
             productDetailVo.setParentCategoryId(0);
-        }else {
+        } else {
             productDetailVo.setParentCategoryId(category.getParentId());
         }
 

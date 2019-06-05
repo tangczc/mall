@@ -17,7 +17,7 @@
         update_time,
         deleted
     </sql>
-    <select id="getProductList" resultType="com.rootchen.mall.entity.Product">
+    <select id="getProductList" resultType="com.rootchen.mall.vo.ProductListVo">
         select <include refid="Base_Column_List"/>
         from mall_product where deleted = 0
     </select>

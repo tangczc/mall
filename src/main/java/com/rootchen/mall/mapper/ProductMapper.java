@@ -3,7 +3,10 @@ package com.rootchen.mall.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rootchen.mall.entity.Product;
+import com.rootchen.mall.vo.ProductListVo;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -20,7 +23,7 @@ public interface ProductMapper extends BaseMapper<Product> {
      *
      * @return
      */
-    Page<Product> getProductList(Page page);
+    List<ProductListVo> getProductList(Page page);
 
     /**
      * 查询产品详情
