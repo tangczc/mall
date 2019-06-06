@@ -9,5 +9,8 @@
     http://localhost:4333/swagger-ui.html
 
 ---
-未完待续。。。
+未完待续
+---
+该项目在遵守[Apache Licence 2.0](https://www.apache.org/licenses/LICENSE-2.0.html)下只供学习使用，如使用改代码在一些其他方面，造成的一些不可预知的后果都由使用者自己承担。与本人无任何关系。
+
 
