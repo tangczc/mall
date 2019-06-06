@@ -2,7 +2,9 @@ package com.rootchen.mall.service;
 
 import com.rootchen.mall.common.SR;
 import com.rootchen.mall.entity.Product;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -47,21 +49,33 @@ public interface IProductService {
     /**
      * 查找产品详情
      *
-     * @param session session
+     * @param session   session
      * @param productId 产品id
      * @return
      */
-    SR getProductDetail(HttpSession session,Long productId);
+    SR getProductDetail(HttpSession session, Long productId);
 
     /**
      * 商品查找
      *
-     * @param session session
-     * @param productId 商品 id
+     * @param session     session
+     * @param productId   商品 id
      * @param productName 商品名称
-     * @param pageNum 页数
-     * @param pageSize 总数
+     * @param pageNum     页数
+     * @param pageSize    总数
      * @return
      */
-    SR productSearch(HttpSession session,Long productId,String productName,Integer pageNum, Integer pageSize);
+    SR productSearch(HttpSession session, Long productId, String productName, Integer pageNum, Integer pageSize);
+
+    /**
+     * 文件上传
+     *
+     * @param session       session
+     * @param multipartFile 文件
+     * @param request       request
+     * @return
+     */
+    SR upload(HttpSession session, MultipartFile multipartFile, HttpServletRequest request);
+
+
 }

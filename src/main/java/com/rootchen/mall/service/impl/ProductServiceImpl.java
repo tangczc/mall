@@ -2,6 +2,7 @@ package com.rootchen.mall.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.common.collect.Lists;
 import com.rootchen.mall.common.CheckUser;
 import com.rootchen.mall.common.SR;
 import com.rootchen.mall.entity.Category;
@@ -9,15 +10,23 @@ import com.rootchen.mall.entity.Product;
 import com.rootchen.mall.mapper.CategoryMapper;
 import com.rootchen.mall.mapper.ProductMapper;
 import com.rootchen.mall.service.IProductService;
+import com.rootchen.mall.util.FTPUtil;
 import com.rootchen.mall.util.PropertiesUtil;
+import com.rootchen.mall.vo.FileUploadResultVo;
 import com.rootchen.mall.vo.ProductDetailVo;
 import com.rootchen.mall.vo.ProductListVo;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * <p>
@@ -27,6 +36,7 @@ import java.util.List;
  * @author LC
  * @since 2019-05-16
  */
+@Log4j2
 @Service("iProductService")
 public class ProductServiceImpl implements IProductService {
 
@@ -116,7 +126,7 @@ public class ProductServiceImpl implements IProductService {
         }
         Page<ProductListVo> productPage = new Page<>(pageNum, pageSize);
         List<ProductListVo> productListVos = productMapper.getProductList(productPage);
-        for (ProductListVo productListVo: productListVos) {
+        for (ProductListVo productListVo : productListVos) {
             productListVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
         }
         IPage<ProductListVo> productIPage = productPage.setRecords(productListVos);
@@ -126,25 +136,29 @@ public class ProductServiceImpl implements IProductService {
     /**
      * 商品查找
      *
-     * @param session session
-     * @param productId 商品 id
+     * @param session     session
+     * @param productId   商品 id
      * @param productName 商品名称
-     * @param pageNum 页数
-     * @param pageSize 总数
+     * @param pageNum     页数
+     * @param pageSize    总数
      * @return
      */
     @Override
-    public SR<IPage> productSearch(HttpSession session,Long productId,String productName,Integer pageNum, Integer pageSize){
+    public SR<IPage> productSearch(HttpSession session, Long productId, String productName, Integer pageNum, Integer pageSize) {
         SR sr = CheckUser.checkUser(session);
         if (!sr.success()) {
             return sr;
         }
-        if (StringUtils.isNotBlank(productName)){
+        if (StringUtils.isNotBlank(productName)) {
             productName = new StringBuilder().append("%").append(productName).append("%").toString();
         }
-        Page<Product> productPage = new Page<>(pageNum,pageSize);
-        IPage<Product> productIPage = productMapper.selectByproductIdAndproductName(productPage,productId,productName);
-        return SR.ok(productIPage);
+        Page<ProductListVo> productPage = new Page<>(pageNum, pageSize);
+        List<ProductListVo> productListVos = productMapper.selectByproductIdAndproductName(productPage, productId, productName);
+        for (ProductListVo productListVo : productListVos) {
+            productListVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
+        }
+        IPage<ProductListVo> ProductListVoIpage = productPage.setRecords(productListVos);
+        return SR.ok(ProductListVoIpage);
 
     }
 
@@ -168,6 +182,57 @@ public class ProductServiceImpl implements IProductService {
         ProductDetailVo productDetailVo = getProductDetailVo(product);
         return SR.ok(productDetailVo);
     }
+
+    /**
+     * 文件上传
+     *
+     * @param session       session
+     * @param multipartFile 文件
+     * @param request       request
+     * @return
+     */
+    @Override
+    public SR upload(HttpSession session, MultipartFile multipartFile, HttpServletRequest request) {
+        SR sr = CheckUser.checkUser(session);
+        if (!sr.success()) {
+            return sr;
+        }
+        //获取本地图片上传路径
+        String path = request.getSession().getServletContext().getRealPath("upload");
+        //获取文件名称
+        String fileName = multipartFile.getOriginalFilename();
+        //获取文件扩展名
+        String fileExtensionName = fileName.substring(fileName.lastIndexOf(".") + 1);
+        //生成新的随机文件名
+        String uploadFileName = UUID.randomUUID().toString() + "." + fileExtensionName;
+        log.info("开始上传文件，上传文件名:{},上传路径:{},新文件名字:{}", fileName, path, uploadFileName);
+        //创建文件夹
+        File fileDir = new File(path);
+        if (!fileDir.exists()) {
+            fileDir.setWritable(true);
+            fileDir.mkdirs();
+        }
+        //上传文件之本地
+        File targetFile = new File(path, uploadFileName);
+        try {
+            multipartFile.transferTo(targetFile);
+            //todo 把本地文件上传至ftp服务器
+            FTPUtil.uploadFile(Lists.newArrayList(targetFile));
+            //删除本地文件
+            targetFile.delete();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return SR.errorMsg("上传失败");
+        }
+        fileName = targetFile.getName();
+        String url = PropertiesUtil.getProperty("ftp.server.http.prefix") + fileName;
+        FileUploadResultVo fileUploadResultVo = FileUploadResultVo.builder()
+                .fileName(fileName)
+                .url(url)
+                .build();
+        return SR.ok("上传成功", fileUploadResultVo);
+    }
+
 
     /**
      * 获取ProductVo用户前端展示

@@ -41,6 +41,6 @@ public interface ProductMapper extends BaseMapper<Product> {
      * @param productName 商品名称
      * @return
      */
-    IPage<Product> selectByproductIdAndproductName(Page productPage, @Param("productId") Long productId, @Param("productName")String productName);
+    List<ProductListVo> selectByproductIdAndproductName(Page productPage, @Param("productId") Long productId, @Param("productName")String productName);
 
 }

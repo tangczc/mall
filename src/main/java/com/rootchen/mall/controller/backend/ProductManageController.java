@@ -8,7 +8,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -32,7 +35,7 @@ public class ProductManageController {
         return iProductService.addOrUpdateProduct(session, product);
     }
 
-    @RequestMapping(value = "set_product_status", method = RequestMethod.GET)
+    @RequestMapping(value = "set_product_status.do", method = RequestMethod.GET)
     @ApiOperation(value = "修改", notes = "修改产品上下架")
     public SR setProductStatus(HttpSession session, @RequestParam("productId") Long productId, @RequestParam("status") Integer status) {
         return iProductService.setProductStatus(session, productId, status);
@@ -47,18 +50,29 @@ public class ProductManageController {
     @RequestMapping(value = "product_Search.do", method = RequestMethod.GET)
     @ApiOperation(value = "查找", notes = "商品搜索(分页)")
     public SR productSearch(HttpSession session,
-              @RequestParam("productId") Long productId,
-              @RequestParam("productName") String productName,
-              @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-              @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-        return iProductService.productSearch(session,productId,productName,pageNum,pageSize);
+                            @RequestParam("productId") Long productId,
+                            @RequestParam("productName") String productName,
+                            @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+        return iProductService.productSearch(session, productId, productName, pageNum, pageSize);
     }
 
-    @RequestMapping(value = "get_product_detail",method = RequestMethod.GET)
-    @ApiOperation(value = "查找",notes = "查找产品详情")
-    public SR getProductDetail(HttpSession session,@RequestParam("productId") Long productId){
-        return iProductService.getProductDetail(session,productId);
+    @RequestMapping(value = "get_product_detail.do", method = RequestMethod.GET)
+    @ApiOperation(value = "查找", notes = "查找产品详情")
+    public SR getProductDetail(HttpSession session, @RequestParam("productId") Long productId) {
+        return iProductService.getProductDetail(session, productId);
     }
 
+    @RequestMapping(value = "upload.do", method = RequestMethod.POST)
+    @ApiOperation(value = "上传", notes = "文件上传")
+    public SR upload(HttpSession session, @RequestParam(value = "upload_file", required = false) MultipartFile multipartFile, HttpServletRequest request) {
+        return iProductService.upload(session, multipartFile, request);
+    }
 
+    @RequestMapping(value = "rich_text_img_upload.do", method = RequestMethod.POST)
+    @ApiOperation(value = "上传", notes = "针对Simditor的富文本文件上传")
+    public SR simditorFileUpload(HttpSession session, @RequestParam(value = "upload_file", required = false) MultipartFile multipartFile, HttpServletRequest request, HttpServletResponse response) {
+        response.addHeader("Access_Control_Allow_Headers", "X-File-Name");
+        return iProductService.upload(session, multipartFile, request);
+    }
 }
