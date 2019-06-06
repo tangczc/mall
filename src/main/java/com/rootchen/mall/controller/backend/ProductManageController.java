@@ -39,9 +39,19 @@ public class ProductManageController {
     }
 
     @RequestMapping(value = "product_list.do", method = RequestMethod.GET)
-    @ApiOperation(value = "分页", notes = "商品列表(分页)")
+    @ApiOperation(value = "查找", notes = "商品列表(分页)")
     public SR productList(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         return iProductService.getProductList(session, pageNum, pageSize);
+    }
+
+    @RequestMapping(value = "product_Search.do", method = RequestMethod.GET)
+    @ApiOperation(value = "查找", notes = "商品搜索(分页)")
+    public SR productSearch(HttpSession session,
+              @RequestParam("productId") Long productId,
+              @RequestParam("productName") String productName,
+              @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+              @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+        return iProductService.productSearch(session,productId,productName,pageNum,pageSize);
     }
 
     @RequestMapping(value = "get_product_detail",method = RequestMethod.GET)
@@ -49,5 +59,6 @@ public class ProductManageController {
     public SR getProductDetail(HttpSession session,@RequestParam("productId") Long productId){
         return iProductService.getProductDetail(session,productId);
     }
+
 
 }

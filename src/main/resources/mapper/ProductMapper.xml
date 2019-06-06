@@ -19,11 +19,23 @@
     </sql>
     <select id="getProductList" resultType="com.rootchen.mall.vo.ProductListVo">
         select <include refid="Base_Column_List"/>
-        from mall_product where deleted = 0
+        from mall_product where deleted = 0 order by id asc
     </select>
     <select id="selectProductId" resultType="com.rootchen.mall.entity.Product">
         select <include refid="Base_Column_List"/>
         from mall_product where id = #{id} and deleted = 0
+    </select>
+    <select id="selectByproductIdAndproductName" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from mall_product
+        <where>
+            <if test="productName != null">
+                and name like #{productName}
+            </if>
+            <if test="productId != null">
+                and id = #{productId}
+            </if>
+        </where>
     </select>
 
 </mapper>

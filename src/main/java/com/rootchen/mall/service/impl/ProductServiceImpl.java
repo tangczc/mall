@@ -124,6 +124,31 @@ public class ProductServiceImpl implements IProductService {
     }
 
     /**
+     * 商品查找
+     *
+     * @param session session
+     * @param productId 商品 id
+     * @param productName 商品名称
+     * @param pageNum 页数
+     * @param pageSize 总数
+     * @return
+     */
+    @Override
+    public SR<IPage> productSearch(HttpSession session,Long productId,String productName,Integer pageNum, Integer pageSize){
+        SR sr = CheckUser.checkUser(session);
+        if (!sr.success()) {
+            return sr;
+        }
+        if (StringUtils.isNotBlank(productName)){
+            productName = new StringBuilder().append("%").append(productName).append("%").toString();
+        }
+        Page<Product> productPage = new Page<>(pageNum,pageSize);
+        IPage<Product> productIPage = productMapper.selectByproductIdAndproductName(productPage,productId,productName);
+        return SR.ok(productIPage);
+
+    }
+
+    /**
      * 查找产品详情
      *
      * @param session   session

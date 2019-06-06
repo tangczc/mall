@@ -52,4 +52,16 @@ public interface IProductService {
      * @return
      */
     SR getProductDetail(HttpSession session,Long productId);
+
+    /**
+     * 商品查找
+     *
+     * @param session session
+     * @param productId 商品 id
+     * @param productName 商品名称
+     * @param pageNum 页数
+     * @param pageSize 总数
+     * @return
+     */
+    SR productSearch(HttpSession session,Long productId,String productName,Integer pageNum, Integer pageSize);
 }
