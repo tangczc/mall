@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
 import com.rootchen.mall.common.CheckUser;
+import com.rootchen.mall.common.Const;
 import com.rootchen.mall.common.SR;
 import com.rootchen.mall.entity.Category;
 import com.rootchen.mall.entity.Product;
@@ -20,7 +21,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
@@ -192,7 +192,7 @@ public class ProductServiceImpl implements IProductService {
      * @return
      */
     @Override
-    public SR upload(HttpSession session, MultipartFile multipartFile, HttpServletRequest request) {
+    public SR<FileUploadResultVo> upload(HttpSession session, MultipartFile multipartFile, HttpServletRequest request) {
         SR sr = CheckUser.checkUser(session);
         if (!sr.success()) {
             return sr;
@@ -233,6 +233,27 @@ public class ProductServiceImpl implements IProductService {
         return SR.ok("上传成功", fileUploadResultVo);
     }
 
+    /**
+     * 前台查询产品详情
+     *
+     * @param session
+     * @param productId
+     * @return
+     */
+    public SR<ProductDetailVo> getPortalProductDetail(HttpSession session, Long productId) {
+        if (CheckUser.isLoginSuccess(session)) {
+            return SR.errorMsg("请登录");
+        }
+        Product product = productMapper.selectProductId(productId);
+        if (product == null) {
+            return SR.errorMsg("产品已经下架或者删除");
+        }
+        if (product.getStatus() != Const.ProductStatusEnum.ON_SALE.getCode()) {
+            return SR.errorMsg("产品已经下架或者删除");
+        }
+        ProductDetailVo productDetailVo = getProductDetailVo(product);
+        return SR.ok(productDetailVo);
+    }
 
     /**
      * 获取ProductVo用户前端展示

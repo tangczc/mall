@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 public interface IProductService {
 
     /**
-     * 添加商品
+     * 后台添加商品
      *
      * @param session session
      * @param product 商品信息
@@ -27,7 +27,7 @@ public interface IProductService {
     SR addOrUpdateProduct(HttpSession session, Product product);
 
     /**
-     * 产品上下架
+     * 后台产品上下架
      *
      * @param session   session
      * @param productId 产品id
@@ -37,7 +37,7 @@ public interface IProductService {
     SR setProductStatus(HttpSession session, Long productId, Integer status);
 
     /**
-     * 查找产品分页显示
+     * 后台查找产品分页显示
      *
      * @param session  session
      * @param pageNum  页数
@@ -47,7 +47,7 @@ public interface IProductService {
     SR getProductList(HttpSession session, Integer pageNum, Integer pageSize);
 
     /**
-     * 查找产品详情
+     * 后台查找产品详情
      *
      * @param session   session
      * @param productId 产品id
@@ -56,7 +56,7 @@ public interface IProductService {
     SR getProductDetail(HttpSession session, Long productId);
 
     /**
-     * 商品查找
+     * 后台商品查找
      *
      * @param session     session
      * @param productId   商品 id
@@ -77,5 +77,12 @@ public interface IProductService {
      */
     SR upload(HttpSession session, MultipartFile multipartFile, HttpServletRequest request);
 
-
+    /**
+     * 前台查找产品详情
+     *
+     * @param session
+     * @param productId
+     * @return
+     */
+    SR getPortalProductDetail(HttpSession session, Long productId);
 }
