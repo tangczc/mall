@@ -1,15 +1,12 @@
 package com.rootchen.mall.controller.portal;
 
 
-import com.github.pagehelper.PageInfo;
 import com.rootchen.mall.common.SR;
 import com.rootchen.mall.service.IProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpSession;
 
 /**
  * <p>

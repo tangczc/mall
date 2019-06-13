@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.rootchen.mall.common.CheckUser;
 import com.rootchen.mall.common.SR;
-import com.rootchen.mall.common.SRCode;
 import com.rootchen.mall.entity.Category;
 import com.rootchen.mall.mapper.CategoryMapper;
 import com.rootchen.mall.service.ICategoryService;

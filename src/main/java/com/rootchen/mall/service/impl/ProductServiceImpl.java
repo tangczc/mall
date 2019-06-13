@@ -2,8 +2,6 @@ package com.rootchen.mall.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.rootchen.mall.common.CheckUser;
 import com.rootchen.mall.common.Const;
@@ -54,6 +52,7 @@ public class ProductServiceImpl implements IProductService {
 
     @Autowired
     private ICategoryService iCategoryService;
+
     /**
      * 添加商品
      *
@@ -267,7 +266,7 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public SR<IPage> getProductByKeywordCategory(String keyword, Integer categoryId, Integer pageNum, Integer pageSize, String orderBy){
+    public SR<IPage> getProductByKeywordCategory(String keyword, Integer categoryId, Integer pageNum, Integer pageSize, String orderBy) {
         if (StringUtils.isBlank(keyword) && categoryId == null) {
             return SR.error(SRCode.ILLEGAL_ARGUMENT.getCode(), SRCode.ILLEGAL_ARGUMENT.getDesc());
         }
@@ -276,7 +275,7 @@ public class ProductServiceImpl implements IProductService {
             Category category = categoryMapper.selectById(categoryId);
             if (category == null && StringUtils.isBlank(keyword)) {
                 //没有该分类，并且没有关键字，返回一个空，不报错
-                Page<ProductListVo> productListVoPage = new Page<>(pageNum,pageSize);
+                Page<ProductListVo> productListVoPage = new Page<>(pageNum, pageSize);
                 List<ProductListVo> productListVoList = Lists.newArrayList();
                 IPage<ProductListVo> iPage = productListVoPage.setRecords(productListVoList);
                 return SR.ok(iPage);
@@ -286,13 +285,13 @@ public class ProductServiceImpl implements IProductService {
         if (StringUtils.isNotBlank(keyword)) {
             keyword = new StringBuilder().append("%").append(keyword).append("%").toString();
         }
-        Page<ProductListVo> productListVoPage = new Page<>(pageNum,pageSize);
+        Page<ProductListVo> productListVoPage = new Page<>(pageNum, pageSize);
         List<Product> productList = Lists.newArrayList();
         if (StringUtils.isNotBlank(orderBy)) {
             if (Const.ProductListOrderBy.PRICE_ASC_DESC.contains(orderBy)) {
                 String[] orderByArray = orderBy.split("_");
                 orderBy = new StringBuilder().append(orderByArray[0]).append(" ").append(orderByArray[1]).toString();
-                productList = productMapper.selectByNameAndCategoryIds(StringUtils.isBlank(keyword) ? null : keyword, categoryIdList.size() == 0 ? null : categoryIdList,orderBy);
+                productList = productMapper.selectByNameAndCategoryIds(StringUtils.isBlank(keyword) ? null : keyword, categoryIdList.size() == 0 ? null : categoryIdList, orderBy);
             }
         }
         List<ProductListVo> productListVoList = Lists.newArrayList();
@@ -300,7 +299,7 @@ public class ProductServiceImpl implements IProductService {
             productListVoList.add(assembleProductiListVO(product));
         }
 
-       return SR.ok("查询成功",productListVoPage.setRecords(productListVoList));
+        return SR.ok("查询成功", productListVoPage.setRecords(productListVoList));
     }
 
     /**
