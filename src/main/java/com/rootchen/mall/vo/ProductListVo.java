@@ -38,4 +38,7 @@ public class ProductListVo {
 
     @ApiModelProperty("图片服务器url前缀")
     private String imageHost;
+
+    @ApiModelProperty("商品状态")
+    private Integer status;
 }

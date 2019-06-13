@@ -113,16 +113,12 @@ public class CategoryServiceImpl implements ICategoryService {
     /**
      * 递归查询父节点下的所有子节点信息
      *
-     * @param session    session
      * @param categoryId 父节点id
      * @return
      */
     @Override
-    public SR getDeepCategory(HttpSession session, Long categoryId) {
-        SR sr = CheckUser.checkUser(session);
-        if (!sr.success()) {
-            return sr;
-        }
+    public SR<List<Long>> getDeepCategory(Long categoryId) {
+
         Set<Category> categorySet = Sets.newHashSet();
         findChildrenCategory(categorySet, categoryId);
         List<Long> categoryIdList = Lists.newArrayList();

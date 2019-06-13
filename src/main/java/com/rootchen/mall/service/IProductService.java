@@ -80,9 +80,31 @@ public interface IProductService {
     /**
      * 前台查找产品详情
      *
-     * @param session
      * @param productId
      * @return
      */
-    SR getPortalProductDetail(HttpSession session, Long productId);
+    SR getPortalProductDetail(Long productId);
+
+    /**
+     * 前台台商品搜索
+     *
+     * @param productId   商品id
+     * @param productName 商品名
+     * @param pageNum     页数
+     * @param pageSize    总数
+     * @return
+     */
+    SR searchProduct(Long productId, String productName, Integer pageNum, Integer pageSize);
+
+    /**
+     * 列表 动态排序
+     *
+     * @param keyword
+     * @param categoryId
+     * @param pageNum
+     * @param pageSize
+     * @param orderBy
+     * @return
+     */
+    SR getProductByKeywordCategory(String keyword, Integer categoryId, Integer pageNum, Integer pageSize, String orderBy);
 }

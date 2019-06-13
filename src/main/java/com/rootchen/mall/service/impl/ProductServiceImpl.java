@@ -2,14 +2,18 @@ package com.rootchen.mall.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.rootchen.mall.common.CheckUser;
 import com.rootchen.mall.common.Const;
 import com.rootchen.mall.common.SR;
+import com.rootchen.mall.common.SRCode;
 import com.rootchen.mall.entity.Category;
 import com.rootchen.mall.entity.Product;
 import com.rootchen.mall.mapper.CategoryMapper;
 import com.rootchen.mall.mapper.ProductMapper;
+import com.rootchen.mall.service.ICategoryService;
 import com.rootchen.mall.service.IProductService;
 import com.rootchen.mall.util.FTPUtil;
 import com.rootchen.mall.util.PropertiesUtil;
@@ -21,10 +25,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,6 +52,8 @@ public class ProductServiceImpl implements IProductService {
     @Autowired
     private CategoryMapper categoryMapper;
 
+    @Autowired
+    private ICategoryService iCategoryService;
     /**
      * 添加商品
      *
@@ -149,15 +157,7 @@ public class ProductServiceImpl implements IProductService {
         if (!sr.success()) {
             return sr;
         }
-        if (StringUtils.isNotBlank(productName)) {
-            productName = new StringBuilder().append("%").append(productName).append("%").toString();
-        }
-        Page<ProductListVo> productPage = new Page<>(pageNum, pageSize);
-        List<ProductListVo> productListVos = productMapper.selectByproductIdAndproductName(productPage, productId, productName);
-        for (ProductListVo productListVo : productListVos) {
-            productListVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
-        }
-        IPage<ProductListVo> ProductListVoIpage = productPage.setRecords(productListVos);
+        IPage<ProductListVo> ProductListVoIpage = getProductListVoIPage(productId, productName, pageNum, pageSize);
         return SR.ok(ProductListVoIpage);
 
     }
@@ -236,14 +236,10 @@ public class ProductServiceImpl implements IProductService {
     /**
      * 前台查询产品详情
      *
-     * @param session
      * @param productId
      * @return
      */
-    public SR<ProductDetailVo> getPortalProductDetail(HttpSession session, Long productId) {
-        if (CheckUser.isLoginSuccess(session)) {
-            return SR.errorMsg("请登录");
-        }
+    public SR<ProductDetailVo> getPortalProductDetail(Long productId) {
         Product product = productMapper.selectProductId(productId);
         if (product == null) {
             return SR.errorMsg("产品已经下架或者删除");
@@ -253,6 +249,58 @@ public class ProductServiceImpl implements IProductService {
         }
         ProductDetailVo productDetailVo = getProductDetailVo(product);
         return SR.ok(productDetailVo);
+    }
+
+    /**
+     * 前台商品搜索
+     *
+     * @param productId   商品id
+     * @param productName 商品名
+     * @param pageNum     页数
+     * @param pageSize    总数
+     * @return
+     */
+    @Override
+    public SR<IPage> searchProduct(Long productId, String productName, Integer pageNum, Integer pageSize) {
+        IPage<ProductListVo> ProductListVoIpage = getProductListVoIPage(productId, productName, pageNum, pageSize);
+        return SR.ok(ProductListVoIpage);
+    }
+
+    @Override
+    public SR<IPage> getProductByKeywordCategory(String keyword, Integer categoryId, Integer pageNum, Integer pageSize, String orderBy){
+        if (StringUtils.isBlank(keyword) && categoryId == null) {
+            return SR.error(SRCode.ILLEGAL_ARGUMENT.getCode(), SRCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+        List<Long> categoryIdList = new ArrayList<>();
+        if (categoryId != null) {
+            Category category = categoryMapper.selectById(categoryId);
+            if (category == null && StringUtils.isBlank(keyword)) {
+                //没有该分类，并且没有关键字，返回一个空，不报错
+                Page<ProductListVo> productListVoPage = new Page<>(pageNum,pageSize);
+                List<ProductListVo> productListVoList = Lists.newArrayList();
+                IPage<ProductListVo> iPage = productListVoPage.setRecords(productListVoList);
+                return SR.ok(iPage);
+            }
+            categoryIdList = iCategoryService.getDeepCategory(category.getId()).getData();
+        }
+        if (StringUtils.isNotBlank(keyword)) {
+            keyword = new StringBuilder().append("%").append(keyword).append("%").toString();
+        }
+        Page<ProductListVo> productListVoPage = new Page<>(pageNum,pageSize);
+        List<Product> productList = Lists.newArrayList();
+        if (StringUtils.isNotBlank(orderBy)) {
+            if (Const.ProductListOrderBy.PRICE_ASC_DESC.contains(orderBy)) {
+                String[] orderByArray = orderBy.split("_");
+                orderBy = new StringBuilder().append(orderByArray[0]).append(" ").append(orderByArray[1]).toString();
+                productList = productMapper.selectByNameAndCategoryIds(StringUtils.isBlank(keyword) ? null : keyword, categoryIdList.size() == 0 ? null : categoryIdList,orderBy);
+            }
+        }
+        List<ProductListVo> productListVoList = Lists.newArrayList();
+        for (Product product : productList) {
+            productListVoList.add(assembleProductiListVO(product));
+        }
+
+       return SR.ok("查询成功",productListVoPage.setRecords(productListVoList));
     }
 
     /**
@@ -288,4 +336,40 @@ public class ProductServiceImpl implements IProductService {
         return productDetailVo;
     }
 
+
+    /**
+     * 前后台商品查找商品封装
+     *
+     * @param productId
+     * @param productName
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    private IPage<ProductListVo> getProductListVoIPage(Long productId, String productName, Integer pageNum, Integer pageSize) {
+        if (StringUtils.isNotBlank(productName)) {
+            productName = new StringBuilder().append("%").append(productName).append("%").toString();
+        }
+        Page<ProductListVo> productPage = new Page<>(pageNum, pageSize);
+
+        List<ProductListVo> productListVos = productMapper.selectByproductIdAndproductName(productPage, productId, productName);
+        for (ProductListVo productListVo : productListVos) {
+            productListVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
+        }
+        return productPage.setRecords(productListVos);
+    }
+
+    private ProductListVo assembleProductiListVO(Product product) {
+        ProductListVo productListVo = ProductListVo.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .categoryId(product.getCategoryId())
+                .imageHost(product.getMainImage())
+                .mainImage(product.getMainImage())
+                .price(product.getPrice())
+                .subtitle(product.getSubtitle())
+                .status(product.getStatus())
+                .build();
+        return productListVo;
+    }
 }

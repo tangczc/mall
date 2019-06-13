@@ -37,10 +37,18 @@ public interface ProductMapper extends BaseMapper<Product> {
     /**
      * 查询商品
      *
-     * @param productId 商品id
+     * @param productId   商品id
      * @param productName 商品名称
      * @return
      */
-    List<ProductListVo> selectByproductIdAndproductName(Page productPage, @Param("productId") Long productId, @Param("productName")String productName);
+    List<ProductListVo> selectByproductIdAndproductName(Page productPage, @Param("productId") Long productId, @Param("productName") String productName);
 
+    /**
+     * 商品列表 动态排序
+     *
+     * @param productName
+     * @param categoryIdList
+     * @return
+     */
+    List<Product> selectByNameAndCategoryIds(@Param("productName") String productName, @Param("categoryIdList") List<Long> categoryIdList,@Param("orderBy") String orderBy);
 }

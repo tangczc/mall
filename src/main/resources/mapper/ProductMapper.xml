@@ -18,15 +18,18 @@
         deleted
     </sql>
     <select id="getProductList" resultType="com.rootchen.mall.vo.ProductListVo">
-        select <include refid="Base_Column_List"/>
+        select
+        <include refid="Base_Column_List"/>
         from mall_product where deleted = 0 order by id asc
     </select>
     <select id="selectProductId" resultType="com.rootchen.mall.entity.Product">
-        select <include refid="Base_Column_List"/>
+        select
+        <include refid="Base_Column_List"/>
         from mall_product where id = #{id} and deleted = 0
     </select>
     <select id="selectByproductIdAndproductName" resultType="com.rootchen.mall.vo.ProductListVo">
-        select <include refid="Base_Column_List"/>
+        select
+        <include refid="Base_Column_List"/>
         from mall_product
         <where>
             <if test="productName != null">
@@ -36,6 +39,22 @@
                 and id = #{productId}
             </if>
         </where>
+    </select>
+    <select id="selectByNameAndCategoryIds" resultType="com.rootchen.mall.entity.Product">
+        select
+        <include refid="Base_Column_List"/>
+        from mall_product
+        where status = 1
+        <if test="productName != null">
+            and name like #{productName}
+        </if>
+        <if test="categoryIdList != null">
+            and category_id in
+            <foreach item="item" index="index" open="(" separator="," close=")" collection="categoryIdList">
+                #{item}
+            </foreach>
+        </if>
+        order by
     </select>
 
 </mapper>

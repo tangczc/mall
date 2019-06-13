@@ -3,6 +3,7 @@ package com.rootchen.mall.service;
 import com.rootchen.mall.common.SR;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * <p>
@@ -44,9 +45,8 @@ public interface ICategoryService {
     /**
      * 递归查询父节点下的所有子节点信息
      *
-     * @param session    session
      * @param categoryId 父节点id
      * @return
      */
-    SR getDeepCategory(HttpSession session, Long categoryId);
+    SR<List<Long>> getDeepCategory(Long categoryId);
 }

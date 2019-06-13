@@ -1,6 +1,7 @@
 package com.rootchen.mall.controller.backend;
 
 
+import com.rootchen.mall.common.CheckUser;
 import com.rootchen.mall.common.SR;
 import com.rootchen.mall.service.ICategoryService;
 import io.swagger.annotations.Api;
@@ -49,6 +50,10 @@ public class CategoryManageController {
     @RequestMapping(value = "get_deep_category.do", method = RequestMethod.GET)
     @ApiOperation(value = "查询", notes = "递归查询父节点下的所有子节点信息")
     public SR getDeepCategory(HttpSession session, @RequestParam(value = "categoryId", defaultValue = "0") Long categoryId) {
-        return iCategoryService.getDeepCategory(session, categoryId);
+        SR sr = CheckUser.checkUser(session);
+        if (!sr.success()) {
+            return sr;
+        }
+        return iCategoryService.getDeepCategory(categoryId);
     }
 }
