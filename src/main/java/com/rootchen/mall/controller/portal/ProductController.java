@@ -37,8 +37,8 @@ public class ProductController {
                             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
         return iProductService.searchProduct(productId,productName,pageNum,pageSize);
     }
-    @RequestMapping("list.do")
-    @ResponseBody
+    @RequestMapping(value = "list.do",method = RequestMethod.GET)
+    @ApiOperation(value = "分页",notes = "商品分页排序")
     public SR list(@RequestParam(value = "keyword", required = false) String keyword,
                                         @RequestParam(value = "categoryId", required = false) Integer categoryId,
                                         @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
@@ -46,4 +46,5 @@ public class ProductController {
                                         @RequestParam(value = "orderBy", defaultValue = "") String orderBy) {
         return iProductService.getProductByKeywordCategory(keyword, categoryId, pageNum, pageSize, orderBy);
     }
+
 }
