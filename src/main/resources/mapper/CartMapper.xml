@@ -6,9 +6,46 @@
     <sql id="Base_Column_List">
         id,user_id,product_id,quantity,checked,create_time,update_time,deleted
     </sql>
+    <update id="checkOrUncheckedProduct" parameterType="map">
+        update mall_cart
+        set checked = #{checked},
+        update_time = now()
+        where user_id = #{userId}
+        <if test="productId != null">
+            and product_id = #{product}
+        </if>
+        and deleted = 0
+    </update>
+    <delete id="deleteByUserIdProductIds">
+        delete from mall_cart
+        where user_id = #{userId}
+        <if test="productIdList != null">
+            and product_id in
+            <foreach collection="productIdList" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </delete>
     <select id="selectByUserIdAndProduct" resultType="com.rootchen.mall.entity.Cart">
-        select <include refid="Base_Column_List"/>
+        select
+        <include refid="Base_Column_List"/>
         from mall_cart
         where user_id = #{userId} and product_id = #{productId} and deleted = 0
+    </select>
+    <select id="selectCartProductCheckedStatusByUserId" resultType="java.lang.Integer">
+        select count(1)
+        from mall_cart
+        where checked = 0
+        and user_id = #{userId} and deleted = 0
+    </select>
+    <select id="selectCartByUserId" resultType="com.rootchen.mall.entity.Cart">select
+        <include refid="Base_Column_List"/>
+        from mall_cart
+        where user_id = #{userId} and deleted = 0
+    </select>
+    <select id="selectCartProductCount" resultType="java.lang.Integer">
+        select IFNULL(sum(quantity), 0) as count
+        from mall_cart
+        where user_id = #{userId} and deleted = 0
     </select>
 </mapper>
