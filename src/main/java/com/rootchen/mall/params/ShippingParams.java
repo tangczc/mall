@@ -1,10 +1,11 @@
-package com.rootchen.mall.entity;
+package com.rootchen.mall.params;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.rootchen.mall.common.mp3.BaseModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
-import lombok.experimental.Accessors;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * <p>
@@ -15,18 +16,11 @@ import lombok.experimental.Accessors;
  * @since 2019-06-18
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
 @TableName("mall_shipping")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Shipping extends BaseModel {
-
-    private static final long serialVersionUID = 1L;
-
-    @ApiModelProperty("用户id")
-    private Long userId;
+public class ShippingParams {
 
     @ApiModelProperty("收货姓名")
     private String receiverName;
