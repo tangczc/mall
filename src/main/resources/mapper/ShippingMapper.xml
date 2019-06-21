@@ -3,6 +3,11 @@
 <mapper namespace="com.rootchen.mall.mapper.ShippingMapper">
     <resultMap id="BaseResultMap" type="com.rootchen.mall.entity.Shipping"/>
     <sql id="Base_Column_List">
-        id,user_id,receiver_name,receiver_phone,receiver_mobile,receiver_province,receiver_city,receiver_district,receiver_address,receiver_zipm,create_time,update_time,deleted
+        id,user_id,receiver_name,receiver_phone,receiver_mobile,receiver_province,receiver_city,receiver_district,receiver_address,receiver_zip,create_time,update_time,deleted
     </sql>
+    <select id="selectShippingList" resultType="com.rootchen.mall.entity.Shipping">
+        select <include refid="Base_Column_List"></include>
+        from mall_shipping
+        where user_id = #{userId} and deleted = 0
+    </select>
 </mapper>
