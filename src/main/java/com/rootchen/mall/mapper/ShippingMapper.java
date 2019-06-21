@@ -1,7 +1,10 @@
 package com.rootchen.mall.mapper;
 
-import com.rootchen.mall.entity.Shipping;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.rootchen.mall.entity.Shipping;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface ShippingMapper extends BaseMapper<Shipping> {
 
+    List<Shipping> selectShippingList(@Param("userId") Long userId);
 }
