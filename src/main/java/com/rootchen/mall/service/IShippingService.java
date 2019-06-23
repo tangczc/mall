@@ -36,4 +36,13 @@ public interface IShippingService extends IService<Shipping> {
      */
     SR showShipping(HttpSession session, int pageNum, int pageSize);
 
+    /**
+     * 更新收货地址
+     *
+     * @param session session
+     * @param shippingParams 更新收货地址参数
+     * @return
+     */
+    SR updateShipping(HttpSession session, ShippingParams shippingParams);
+
 }

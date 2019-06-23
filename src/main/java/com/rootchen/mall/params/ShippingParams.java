@@ -22,6 +22,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ShippingParams {
 
+    @ApiModelProperty("收获地址id")
+    private Long shippingId;
+
     @ApiModelProperty("收货姓名")
     private String receiverName;
 

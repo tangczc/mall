@@ -3,6 +3,7 @@ package com.rootchen.mall.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.rootchen.mall.common.CheckUser;
 import com.rootchen.mall.common.Const;
 import com.rootchen.mall.common.SR;
@@ -45,17 +46,7 @@ public class ShippingServiceImpl extends ServiceImpl<ShippingMapper, Shipping> i
             return SR.error(SRCode.NEED_LOGIN.getCode(), SRCode.NEED_LOGIN.getDesc());
         }
         User user = (User) session.getAttribute(Const.CURRENT_USER);
-        Shipping shipping = Shipping.builder()
-                .userId(user.getId())
-                .receiverAddress(shippingParams.getReceiverAddress())
-                .receiverCity(shippingParams.getReceiverCity())
-                .receiverDistrict(shippingParams.getReceiverDistrict())
-                .receiverMobile(shippingParams.getReceiverMobile())
-                .receiverName(shippingParams.getReceiverName())
-                .receiverPhone(shippingParams.getReceiverPhone())
-                .receiverProvince(shippingParams.getReceiverProvince())
-                .receiverZip(shippingParams.getReceiverZip())
-                .build();
+        Shipping shipping = getShipping(shippingParams, user.getId());
         int count = shippingMapper.insert(shipping);
         if (count > 0) {
             return SR.okMsg("添加成功");
@@ -77,10 +68,67 @@ public class ShippingServiceImpl extends ServiceImpl<ShippingMapper, Shipping> i
             return SR.error(SRCode.NEED_LOGIN.getCode(), SRCode.NEED_LOGIN.getDesc());
         }
         User user = (User) session.getAttribute(Const.CURRENT_USER);
-        Page<Shipping> shippingPage = new Page<>(pageNum,pageSize);
+        Page<Shipping> shippingPage = new Page<>(pageNum, pageSize);
         List<Shipping> shippingList = shippingMapper.selectShippingList(user.getId());
         IPage<Shipping> shippingIPage = shippingPage.setRecords(shippingList);
         return SR.ok(shippingIPage);
 
+    }
+
+    /**
+     * 更新收获地址
+     *
+     * @param session        session
+     * @param shippingParams 更新收货地址参数
+     * @return
+     */
+    @Override
+    public SR updateShipping(HttpSession session, ShippingParams shippingParams) {
+        if (!CheckUser.isLoginSuccess(session)) {
+            return SR.error(SRCode.NEED_LOGIN.getCode(), SRCode.NEED_LOGIN.getDesc());
+        }
+        if (shippingParams.getShippingId() == null) {
+            return SR.errorMsg("收获地址id不能为空");
+        }
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        Shipping shipping = shippingMapper.checkShippingByUserId(shippingParams.getShippingId(), user.getId());
+        if (shipping == null) {
+            return SR.errorMsg("参数错误");
+        }
+        shipping = getShipping(shippingParams, user.getId());
+        int count = shippingMapper.updateById(shipping);
+        if (count > 0) {
+            return SR.okMsg("更新成功");
+        }
+        return SR.errorMsg("更新失败");
+    }
+
+
+    /**
+     * 获取收获地址对象
+     *
+     * @param shippingParams
+     * @param userId
+     * @return
+     */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Shipping getShipping(ShippingParams shippingParams, Long userId) {
+        Shipping shipping = Shipping.builder()
+                .receiverAddress(shippingParams.getReceiverAddress())
+                .receiverCity(shippingParams.getReceiverCity())
+                .receiverDistrict(shippingParams.getReceiverDistrict())
+                .receiverMobile(shippingParams.getReceiverMobile())
+                .receiverName(shippingParams.getReceiverName())
+                .receiverPhone(shippingParams.getReceiverPhone())
+                .receiverProvince(shippingParams.getReceiverProvince())
+                .receiverZip(shippingParams.getReceiverZip())
+                .build();
+        if (shippingParams.getShippingId() != null) {
+            shipping.setId(shippingParams.getShippingId());
+        }
+        if (userId != null) {
+            return shipping.setUserId(userId);
+        }
+        return shipping;
     }
 }
