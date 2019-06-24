@@ -105,6 +105,22 @@ public class ShippingServiceImpl extends ServiceImpl<ShippingMapper, Shipping> i
 
 
     /**
+     * 收获地址详情
+     *
+     * @param session    session
+     * @param shippingId 收获地址id
+     * @return
+     */
+    @Override
+    public SR showShippingInfo(HttpSession session, Long shippingId) {
+        if (!CheckUser.isLoginSuccess(session)) {
+            return SR.error(SRCode.NEED_LOGIN.getCode(), SRCode.NEED_LOGIN.getDesc());
+        }
+        Shipping shipping = shippingMapper.selectShippingInfo(shippingId);
+        return SR.ok(shipping);
+    }
+
+    /**
      * 获取收获地址对象
      *
      * @param shippingParams

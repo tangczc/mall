@@ -24,5 +24,20 @@ public interface ShippingMapper extends BaseMapper<Shipping> {
      */
     List<Shipping> selectShippingList(@Param("userId") Long userId);
 
-    Shipping checkShippingByUserId(@Param("shippingId") Long shippingId,@Param("userId") Long userId);
+    /**
+     * 校验收获地址是否是已经登陆用户防止越权
+     *
+     * @param shippingId
+     * @param userId
+     * @return
+     */
+    Shipping checkShippingByUserId(@Param("shippingId") Long shippingId, @Param("userId") Long userId);
+
+    /**
+     * 查询收获地址详情
+     *
+     * @param shippingId
+     * @return
+     */
+    Shipping selectShippingInfo(@Param("shippingId") Long shippingId);
 }

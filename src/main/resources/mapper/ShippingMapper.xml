@@ -17,4 +17,10 @@
         from mall_shipping
         where user_id = #{userId} and id = #{shippingId} and deleted = 0
     </select>
+    <select id="selectShippingInfo" resultType="com.rootchen.mall.entity.Shipping">
+        select
+        <include refid="Base_Column_List"></include>
+        from mall_shipping
+        where id = #{shippingId} and deleted = 0
+    </select>
 </mapper>

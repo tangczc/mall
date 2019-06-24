@@ -39,13 +39,15 @@ public class ShippingController {
         return iShippingService.showShipping(session, pageNum, pageSize);
     }
 
-
-
     @RequestMapping(value = "update_shipping.do", method = RequestMethod.POST)
     @ApiOperation(value = "更新", notes = "更新收获地址")
-    public SR updateShipping(HttpSession session,@RequestBody ShippingParams shippingParams){
-        return iShippingService.updateShipping(session,shippingParams);
+    public SR updateShipping(HttpSession session, @RequestBody ShippingParams shippingParams) {
+        return iShippingService.updateShipping(session, shippingParams);
     }
 
-
+    @RequestMapping(value = "show_shipping.do",method = RequestMethod.GET)
+    @ApiOperation(value = "查询",notes = "收获地址详情")
+    public SR showShipping(HttpSession session, @RequestParam("shippingId") Long shippingId){
+        return iShippingService.showShippingInfo(session,shippingId);
+    }
 }

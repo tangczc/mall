@@ -1,8 +1,8 @@
 package com.rootchen.mall.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.rootchen.mall.common.SR;
 import com.rootchen.mall.entity.Shipping;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.rootchen.mall.params.ShippingParams;
 
 import javax.servlet.http.HttpSession;
@@ -39,10 +39,19 @@ public interface IShippingService extends IService<Shipping> {
     /**
      * 更新收货地址
      *
-     * @param session session
+     * @param session        session
      * @param shippingParams 更新收货地址参数
      * @return
      */
     SR updateShipping(HttpSession session, ShippingParams shippingParams);
+
+    /**
+     * 收获地址详情
+     *
+     * @param session    session
+     * @param shippingId 收获地址id
+     * @return
+     */
+    SR showShippingInfo(HttpSession session, Long shippingId);
 
 }
