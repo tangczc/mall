@@ -146,6 +146,13 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements IC
         return this.list(user.getId());
     }
 
+    /**
+     * 获取购物车商品总数
+     *
+     * @param session
+     * @return
+     */
+    @Override
     public SR getCartProductCount(HttpSession session){
         if (!CheckUser.isLoginSuccess(session)){
             return SR.error(SRCode.NEED_LOGIN.getCode(), SRCode.NEED_LOGIN.getDesc());

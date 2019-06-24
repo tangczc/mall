@@ -5,6 +5,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ *
+ * @author LiChen
+ *
+ * @creat 2016/10/31
+ */
 @SpringBootApplication
 @MapperScan("com.rootchen.mall.mapper")
 @EnableSwagger2

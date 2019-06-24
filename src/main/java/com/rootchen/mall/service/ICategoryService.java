@@ -38,6 +38,7 @@ public interface ICategoryService {
      * 查询父类下同一级子节点的信息
      *
      * @param parentId 父节点id
+     * @param session  session
      * @return
      */
     SR getCategory(HttpSession session, Integer parentId);

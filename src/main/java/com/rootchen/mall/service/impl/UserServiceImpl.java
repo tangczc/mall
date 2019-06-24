@@ -194,6 +194,7 @@ public class UserServiceImpl implements IUserService {
      * @param session
      * @return
      */
+    @Override
     public SR<Object> getUserInformation(HttpSession session) {
         if (!CheckUser.isLoginSuccess(session)) {
             return SR.error(SRCode.NEED_LOGIN.getCode(), "请先登录");

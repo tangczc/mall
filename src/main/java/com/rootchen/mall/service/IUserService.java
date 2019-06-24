@@ -16,10 +16,12 @@ import javax.servlet.http.HttpSession;
  * @since 2019-05-04
  */
 public interface IUserService {
+
     /**
      * 用户登录
      *
-     * @param userLoginParams 用户登录信息
+     * @param userLoginParams
+     * @param session
      * @return
      */
     SR login(UserLoginParams userLoginParams, HttpSession session);
@@ -59,7 +61,8 @@ public interface IUserService {
     /**
      * 更新用户信息
      *
-     * @param updateUserParams 用户更新信息
+     * @param updateUserParams
+     * @param session
      * @return
      */
     SR updateUserInfo(UpdateUserParams updateUserParams, HttpSession session);

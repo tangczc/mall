@@ -26,9 +26,10 @@ public interface CategoryMapper extends BaseMapper<Category> {
 
     /**
      * 查询父节点
+     *
      * @param id 子节点id
+     * @return
      */
-
     Category selectByCategoryId(@Param("id") Integer id);
 
 }

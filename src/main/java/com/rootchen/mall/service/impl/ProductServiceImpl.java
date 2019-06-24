@@ -238,6 +238,7 @@ public class ProductServiceImpl implements IProductService {
      * @param productId
      * @return
      */
+    @Override
     public SR<ProductDetailVo> getPortalProductDetail(Long productId) {
         Product product = productMapper.selectProductId(productId);
         if (product == null) {
