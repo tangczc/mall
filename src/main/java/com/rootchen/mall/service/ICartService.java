@@ -1,8 +1,6 @@
 package com.rootchen.mall.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.rootchen.mall.common.SR;
-import com.rootchen.mall.entity.Cart;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,7 +12,7 @@ import javax.servlet.http.HttpSession;
  * @author LC
  * @since 2019-06-17
  */
-public interface ICartService extends IService<Cart> {
+public interface ICartService {
 
     /**
      * 添加商品到购物车

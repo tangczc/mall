@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rootchen.mall.mapper.OrderItemMapper">
+    <resultMap id="BaseResultMap" type="com.rootchen.mall.entity.OrderItem"></resultMap>
+    <sql id="Base_Column_List">
+        id,user_id,order_no,product_id,product_name,product_image,current_unit_price,quantity,total_price,create_time,update_time,deleted
+    </sql>
+
+    <select id="selectOrderItemByOrderNoAndUserId" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>
+        from mall_order_item
+        where user_id = #{userId} and order_no = #{orderNumber} and deleted = 0
+    </select>
+</mapper>

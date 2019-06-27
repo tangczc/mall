@@ -1,6 +1,5 @@
 package com.rootchen.mall.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.rootchen.mall.common.CheckUser;
@@ -34,7 +33,7 @@ import java.util.List;
  * @since 2019-06-17
  */
 @Service
-public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements ICartService {
+public class CartServiceImpl implements ICartService {
 
     @Autowired
     private CartMapper cartMapper;

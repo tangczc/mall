@@ -165,21 +165,66 @@
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
+
+
+        <!-- 支付宝SDK导入到本地maven仓库 -->
+        <dependency>
+            <groupId>alipay.sdk.source</groupId>
+            <artifactId>java.source</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>alipay.sdk.java</groupId>
+            <artifactId>java</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>alipay.sdk.trade.source</groupId>
+            <artifactId>trade.source</artifactId>
+            <version>2016.12.15</version>
+        </dependency>
+        <dependency>
+            <groupId>alipay.sdk.trade</groupId>
+            <artifactId>trade</artifactId>
+            <version>2016.12.15</version>
+        </dependency>
+        <!-- 支付宝SDK依赖 -->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.10</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+            <version>1.10</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>2.1</version>
+        </dependency>
         <!-- google json转对象 对象转json -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.8.5</version>
         </dependency>
-
-        <!--支付宝SDK-->
-        <!-- https://mvnrepository.com/artifact/com.alipay.sdk/alipay-sdk-java -->
         <dependency>
-            <groupId>com.alipay.sdk</groupId>
-            <artifactId>alipay-sdk-java</artifactId>
-            <version>3.7.89.ALL</version>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+            <version>1.3</version>
         </dependency>
-
 
         <!-- 分页插件 -->
         <dependency>
@@ -199,7 +244,11 @@
             <artifactId>commons-io</artifactId>
             <version>2.0.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>alipay.sdk.trade</groupId>
+            <artifactId>trade</artifactId>
+            <version>2016.12.15</version>
+        </dependency>
     </dependencies>
 
     <build>
