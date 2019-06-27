@@ -1,8 +1,6 @@
 package com.rootchen.mall.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.rootchen.mall.common.SR;
-import com.rootchen.mall.entity.Shipping;
 import com.rootchen.mall.params.ShippingParams;
 
 import javax.servlet.http.HttpSession;
@@ -15,7 +13,7 @@ import javax.servlet.http.HttpSession;
  * @author LC
  * @since 2019-06-18
  */
-public interface IShippingService extends IService<Shipping> {
+public interface IShippingService {
 
     /**
      * 添加收获地址

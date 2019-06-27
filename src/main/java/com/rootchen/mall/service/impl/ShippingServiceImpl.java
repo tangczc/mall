@@ -2,7 +2,6 @@ package com.rootchen.mall.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.rootchen.mall.common.CheckUser;
 import com.rootchen.mall.common.Const;
@@ -28,7 +27,7 @@ import java.util.List;
  * @since 2019-06-18
  */
 @Service
-public class ShippingServiceImpl extends ServiceImpl<ShippingMapper, Shipping> implements IShippingService {
+public class ShippingServiceImpl implements IShippingService {
 
     @Autowired
     private ShippingMapper shippingMapper;
