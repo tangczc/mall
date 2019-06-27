@@ -14,6 +14,7 @@ import com.rootchen.mall.service.IPayInfoService;
 import com.rootchen.mall.util.PropertiesUtil;
 import com.rootchen.mall.vo.AliPayQrVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -24,6 +25,7 @@ import java.util.List;
  * @author: LiChen
  * @create: 2019-06-27 21:27
  */
+@Service
 public class PayInfoServiceImpl implements IPayInfoService {
 
     @Autowired
