@@ -2,6 +2,7 @@ package com.rootchen.mall.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.rootchen.mall.common.mp3.BaseModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -27,56 +28,37 @@ public class Order extends BaseModel {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 订单号
-     */
+    @ApiModelProperty("订单号")
     private Long orderNo;
 
-    /**
-     * 用户id
-     */
+    @ApiModelProperty("用户id")
     private Long userId;
 
+    @ApiModelProperty("购物车id")
     private Long shippingId;
 
-    /**
-     * 实际付款金额,单位是元,保留两位小数
-     */
+    @ApiModelProperty("实际付款金额,单位是元,保留两位小数")
     private BigDecimal payment;
 
-    /**
-     * 支付类型,1-在线支付
-     */
+    @ApiModelProperty("支付类型,1-在线支付")
     private Integer paymentType;
 
-    /**
-     * 运费,单位是元
-     */
+    @ApiModelProperty("运费,单位是元")
     private Integer postage;
 
-    /**
-     * 订单状态:0-已取消-10-未付款，20-已付款，40-已发货，50-交易成功，60-交易关闭
-     */
+    @ApiModelProperty("订单状态:0-已取消-10-未付款，20-已付款，40-已发货，50-交易成功，60-交易关闭")
     private Integer status;
 
-    /**
-     * 支付时间
-     */
+    @ApiModelProperty("支付时间")
     private LocalDateTime paymentTime;
 
-    /**
-     * 发货时间
-     */
+    @ApiModelProperty("发货时间")
     private LocalDateTime sendTime;
 
-    /**
-     * 交易完成时间
-     */
+    @ApiModelProperty("交易完成时间")
     private LocalDateTime endTime;
 
-    /**
-     * 交易关闭时间
-     */
+    @ApiModelProperty("交易关闭时间")
     private LocalDateTime closeTime;
 
 
