@@ -35,4 +35,11 @@ public class PayInfoController {
     public SR aliPay(HttpSession session, HttpServletRequest request, @RequestParam("orderNumber") Long orderNumber){
         return iPayInfoService.aliPay(session,request,orderNumber);
     }
+
+
+    @RequestMapping(value = "pay_status.do",method = RequestMethod.GET)
+    @ApiModelProperty(value = "查询",notes = "查询支付状态")
+    public SR checkPayStatus(HttpSession session,Long orderNumber){
+        return iPayInfoService.checkPayStatus(session,orderNumber);
+    }
 }

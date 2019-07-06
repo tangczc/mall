@@ -55,8 +55,8 @@ public class PayInfoServiceImpl implements IPayInfoService {
         if (order == null) {
             return SR.errorMsg("订单不存在");
         }
-        List<OrderItem> orderItemList = orderItemMapper.selectOrderItemByOrderNoAndUserId(orderNumber,user.getId());
-        SR sr = AliPay.tradePrecreate(orderItemList,orderNumber, path);
+        List<OrderItem> orderItemList = orderItemMapper.selectOrderItemByOrderNoAndUserId(orderNumber, user.getId());
+        SR sr = AliPay.tradePrecreate(orderItemList,order.getPayment().toString() ,orderNumber, path);
         if (!sr.success()) {
             return sr;
         }
@@ -67,5 +67,20 @@ public class PayInfoServiceImpl implements IPayInfoService {
                 .build();
 
         return SR.ok(aliPayQrVo);
+    }
+
+    /**
+     * 查询支付状态，前端轮询调用这个接口直到返回success
+     *
+     * @param session
+     * @param orderNumber
+     * @return
+     */
+    @Override
+    public SR checkPayStatus(HttpSession session, Long orderNumber) {
+
+        AliPay.tradeQuery(orderNumber.toString());
+
+        return ;
     }
 }

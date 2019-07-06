@@ -18,10 +18,19 @@ public interface IPayInfoService {
     /**
      * 支付宝支付
      *
-     * @param session session
-     * @param request request
+     * @param session     session
+     * @param request     request
      * @param orderNumber 订单号
      * @return
      */
     SR aliPay(HttpSession session, HttpServletRequest request, Long orderNumber);
+
+    /**
+     * 查询支付状态，前端轮询调用这个接口直到返回success
+     *
+     * @param session
+     * @param orderNumber
+     * @return
+     */
+    SR checkPayStatus(HttpSession session, Long orderNumber);
 }
