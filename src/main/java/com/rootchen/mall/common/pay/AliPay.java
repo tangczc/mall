@@ -77,7 +77,7 @@ public class AliPay {
     /**
      * 测试当面付2.0生成支付二维码
      */
-    public static SR<String> tradePrecreate(List<OrderItem> orderItemList,String payment, Long orderNumber, String path) {
+    public static SR<String> tradePrecreate(List<OrderItem> orderItemList, String payment, Long orderNumber, String path) {
         // (必填) 商户网站订单系统中唯一订单号，64个字符以内，只能包含字母、数字、下划线，
         // 需保证商户系统端不能重复，建议通过数据库sequence生成，
         String outTradeNo = orderNumber.toString();
@@ -185,7 +185,7 @@ public class AliPay {
     /**
      * 测试当面付2.0查询订单
      */
-    public static void tradeQuery(String outTradeNo) {
+    public static SR<String> tradeQuery(String outTradeNo) {
         // (必填) 商户订单号，通过此商户订单号查询当面付的交易状态
 //        String outTradeNo = "tradepay14817938139942440181";
 
@@ -207,19 +207,19 @@ public class AliPay {
                         log.info(bill.getFundChannel() + ":" + bill.getAmount());
                     }
                 }
-                break;
+                return SR.okMsg("订单支付成功");
 
             case FAILED:
                 log.error("查询返回该订单支付失败或被关闭!!!");
-                break;
+                return SR.errorMsg("查询返回该订单支付失败或被关闭!!");
+
 
             case UNKNOWN:
                 log.error("系统异常，订单支付状态未知!!!");
-                break;
-
+                return SR.errorMsg("系统异常，订单支付状态未知!!!");
             default:
                 log.error("不支持的交易状态，交易返回异常!!!");
-                break;
+                return SR.errorMsg("不支持的交易状态，交易返回异常!!!");
         }
     }
 
