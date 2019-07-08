@@ -2,7 +2,10 @@ package com.rootchen.mall.mapper;
 
 import com.rootchen.mall.entity.Order;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.rootchen.mall.entity.OrderItem;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -22,4 +25,5 @@ public interface OrderMapper extends BaseMapper<Order> {
      * @return
      */
     Order selectByUserIdAndOrderNumber(@Param("userId") Long userId, @Param("orderNumber") Long orderNumber);
+
 }

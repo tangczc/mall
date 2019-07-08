@@ -68,4 +68,12 @@ public interface CartMapper extends BaseMapper<Cart> {
     int selectCartProductCount(@Param("userId") Long userId);
 
 
+    /**
+     * 查询用户购物车里选中的商品
+     *
+     * @param userId
+     * @return
+     */
+    List<Cart> selectCheckedByUserId(@Param("userId") Long userId);
+
 }

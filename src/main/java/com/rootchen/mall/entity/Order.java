@@ -7,7 +7,7 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * <p>
@@ -50,16 +50,16 @@ public class Order extends BaseModel {
     private Integer status;
 
     @ApiModelProperty("支付时间")
-    private LocalDateTime paymentTime;
+    private Date paymentTime;
 
     @ApiModelProperty("发货时间")
-    private LocalDateTime sendTime;
+    private Date sendTime;
 
     @ApiModelProperty("交易完成时间")
-    private LocalDateTime endTime;
+    private Date endTime;
 
     @ApiModelProperty("交易关闭时间")
-    private LocalDateTime closeTime;
+    private Date closeTime;
 
 
 }

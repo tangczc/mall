@@ -48,4 +48,9 @@
         from mall_cart
         where user_id = #{userId} and deleted = 0
     </select>
+    <select id="selectCheckedByUserId" parameterType="long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>
+        from mall_cart
+        where userId = #{userId} ande deleted = 0 and checked = 1
+    </select>
 </mapper>

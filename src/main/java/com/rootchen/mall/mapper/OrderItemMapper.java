@@ -23,5 +23,14 @@ public interface OrderItemMapper extends BaseMapper<OrderItem> {
      * @param userId
      * @return
      */
-    List<OrderItem> selectOrderItemByOrderNoAndUserId(@Param("orderNumber") Long orderNumber,@Param("userId") Long userId);
+    List<OrderItem> selectOrderItemByOrderNoAndUserId(@Param("orderNumber") Long orderNumber, @Param("userId") Long userId);
+
+
+    /**
+     * 批量插入
+     *
+     * @param orderItemList
+     */
+    void batchInsert(@Param("orderItemList") List<OrderItem> orderItemList);
+
 }

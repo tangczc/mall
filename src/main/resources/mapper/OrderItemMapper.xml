@@ -5,9 +5,19 @@
     <sql id="Base_Column_List">
         id,user_id,order_no,product_id,product_name,product_image,current_unit_price,quantity,total_price,create_time,update_time,deleted
     </sql>
+    <insert id="batchInsert" parameterType="list">
+        insert into mall_order_item (order_no,user_id,product_id,product_name,product_image,current_unit_price,quantity,total_price,create_time)
+        values
+        <foreach collection="orderItemList" index="index" item="item" separator=",">
+            (
+            #{item.orderNumber},#{item.userId},#{item.productId},#{item.productName},#{item.productImage},#{item.currentUnitPrice},#{item.quantity},#{item.totalPrice},now()
+            )
+        </foreach>
+    </insert>
 
     <select id="selectOrderItemByOrderNoAndUserId" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"></include>
+        select
+        <include refid="Base_Column_List"></include>
         from mall_order_item
         where user_id = #{userId} and order_no = #{orderNumber} and deleted = 0
     </select>
