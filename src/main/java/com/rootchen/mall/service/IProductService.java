@@ -99,11 +99,11 @@ public interface IProductService {
     /**
      * 列表 动态排序
      *
-     * @param keyword
-     * @param categoryId
-     * @param pageNum
-     * @param pageSize
-     * @param orderBy
+     * @param keyword    关键字
+     * @param categoryId 产品id
+     * @param pageNum    页数
+     * @param pageSize   总页数
+     * @param orderBy    排序方式
      * @return
      */
     SR getProductByKeywordCategory(String keyword, Integer categoryId, Integer pageNum, Integer pageSize, String orderBy);

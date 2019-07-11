@@ -79,6 +79,18 @@ public class PayInfoServiceImpl implements IPayInfoService {
     @Override
     public SR checkPayStatus(HttpSession session, Long orderNumber) {
 
-        return AliPay.tradeQuery(orderNumber.toString());
+        SR sr = AliPay.tradeQuery(orderNumber.toString());
+        if (!sr.success()) {
+            return SR.errorMsg("订单未支付");
+        }
+
+        Long userId = ((User) session.getAttribute(Const.CURRENT_USER)).getId();
+        Order order = orderMapper.selectByUserIdAndOrderNumber(userId, orderNumber);
+        if (order == null) {
+            return SR.errorMsg("订单出现异常");
+        }
+        order.setStatus(Const.OrderStatusEnum.PAID.getCode());
+        orderMapper.updateById(order);
+        return sr;
     }
 }

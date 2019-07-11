@@ -266,6 +266,16 @@ public class ProductServiceImpl implements IProductService {
         return SR.ok(ProductListVoIpage);
     }
 
+    /**
+     * 列表 动态排序
+     *
+     * @param keyword    关键字
+     * @param categoryId 产品id
+     * @param pageNum    页数
+     * @param pageSize   总页数
+     * @param orderBy    排序方式
+     * @return
+     */
     @Override
     public SR<IPage> getProductByKeywordCategory(String keyword, Integer categoryId, Integer pageNum, Integer pageSize, String orderBy) {
         if (StringUtils.isBlank(keyword) && categoryId == null) {
@@ -340,10 +350,10 @@ public class ProductServiceImpl implements IProductService {
     /**
      * 前后台商品查找商品封装
      *
-     * @param productId
-     * @param productName
-     * @param pageNum
-     * @param pageSize
+     * @param productId   产品id
+     * @param productName 产品名字
+     * @param pageNum     页数
+     * @param pageSize    总数
      * @return
      */
     private IPage<ProductListVo> getProductListVoIPage(Long productId, String productName, Integer pageNum, Integer pageSize) {
@@ -359,6 +369,12 @@ public class ProductServiceImpl implements IProductService {
         return productPage.setRecords(productListVos);
     }
 
+    /**
+     * 获取产品列表Vo
+     *
+     * @param product 产品id
+     * @return
+     */
     private ProductListVo assembleProductiListVO(Product product) {
         ProductListVo productListVo = ProductListVo.builder()
                 .id(product.getId())

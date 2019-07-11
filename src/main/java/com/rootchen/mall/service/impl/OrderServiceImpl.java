@@ -1,5 +1,8 @@
 package com.rootchen.mall.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
 import com.rootchen.mall.common.CheckUser;
 import com.rootchen.mall.common.Const;
@@ -10,9 +13,7 @@ import com.rootchen.mall.mapper.*;
 import com.rootchen.mall.service.IOrderService;
 import com.rootchen.mall.util.BigDecimalUtil;
 import com.rootchen.mall.util.PropertiesUtil;
-import com.rootchen.mall.vo.OrderItemVo;
-import com.rootchen.mall.vo.OrderVo;
-import com.rootchen.mall.vo.ShippingVo;
+import com.rootchen.mall.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -90,7 +91,7 @@ public class OrderServiceImpl implements IOrderService {
         //清空购物车
         this.cleanCart(cartList);
         //返回订单明细
-        OrderVo orderVo = getOrderVo(order,orderItemList);
+        OrderVo orderVo = getOrderVo(order, orderItemList);
         return SR.ok(orderVo);
 
     }
@@ -244,7 +245,7 @@ public class OrderServiceImpl implements IOrderService {
 
         List<OrderItemVo> orderItemVoList = Lists.newArrayList();
 
-        for (OrderItem orderItem : orderItemList){
+        for (OrderItem orderItem : orderItemList) {
             OrderItemVo orderItemVo = getOrderItemVo(orderItem);
             orderItemVoList.add(orderItemVo);
         }
@@ -274,11 +275,10 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     /**
-     *
      * @param orderItem 订单明细
      * @return
      */
-    private OrderItemVo getOrderItemVo(OrderItem orderItem){
+    private OrderItemVo getOrderItemVo(OrderItem orderItem) {
         OrderItemVo orderItemVo = OrderItemVo.builder()
                 .orderNo(orderItem.getOrderNo())
                 .currentUnitPrice(orderItem.getCurrentUnitPrice())
@@ -290,5 +290,121 @@ public class OrderServiceImpl implements IOrderService {
                 .createTime(orderItem.getCreateTime())
                 .build();
         return orderItemVo;
+    }
+
+    /**
+     * 取消订单
+     *
+     * @param session     session
+     * @param orderNumber 订单编号
+     * @return
+     */
+    @Override
+    public SR<String> cancel(HttpSession session, Long orderNumber) {
+        if (!CheckUser.isLoginSuccess(session)) {
+            return SR.error(SRCode.NEED_LOGIN.getCode(), SRCode.NEED_LOGIN.getDesc());
+        }
+        Long userId = ((User) session.getAttribute(Const.CURRENT_USER)).getId();
+
+        Order order = orderMapper.selectByUserIdAndOrderNumber(userId, orderNumber);
+        if (order == null) {
+            return SR.errorMsg("订单不存在");
+        }
+        if (order.getStatus() != Const.OrderStatusEnum.NO_PAY.getCode()) {
+            return SR.errorMsg("订单已经付款无法取消订单");
+        }
+        order.setStatus(Const.OrderStatusEnum.CANCENED.getCode());
+        int count = orderMapper.updateById(order);
+        if (count > 0) {
+            return SR.okMsg("订单取消成功");
+        }
+        return SR.errorMsg("订单取消失败");
+
+    }
+
+    /**
+     * 购物车明细
+     *
+     * @param session     session
+     * @param orderNumber 订单编号
+     * @return
+     */
+    @Override
+    public SR getOrderCartProduct(HttpSession session, Long orderNumber) {
+        if (!CheckUser.isLoginSuccess(session)) {
+            return SR.error(SRCode.NEED_LOGIN.getCode(), SRCode.NEED_LOGIN.getDesc());
+        }
+        Long userId = ((User) session.getAttribute(Const.CURRENT_USER)).getId();
+
+        OrderProductVo orderProductVo = OrderProductVo.builder().build();
+        List<Cart> cartList = cartMapper.selectCheckedByUserId(userId);
+        SR sr = getCartOrderItem(userId, cartList);
+        if (!sr.success()) {
+            return sr;
+        }
+        List<OrderItem> orderItemList = (List<OrderItem>) sr.getData();
+        List<OrderItemVo> orderItemVoList = Lists.newArrayList();
+
+        BigDecimal payment = new BigDecimal("0");
+        for (OrderItem orderItem : orderItemList) {
+            payment = new BigDecimal(BigDecimalUtil.add(payment.doubleValue(), orderItem.getTotalPrice().doubleValue()));
+            orderItemVoList.add(getOrderItemVo(orderItem));
+        }
+
+        orderProductVo.setProductTotalPrice(payment);
+        orderProductVo.setOrderItemVoList(orderItemVoList);
+        orderProductVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
+
+        return SR.ok(orderProductVo);
+
+    }
+
+    /**
+     * 查询订单列表页
+     *
+     * @param session  session
+     * @param pageNum  当前页数
+     * @param pageSize 总页数
+     * @return
+     */
+    @Override
+    public SR<IPage<OrderListVo>> getOrderList(HttpSession session, Integer pageNum, Integer pageSize) {
+        if (!CheckUser.isLoginSuccess(session)) {
+            return SR.error(SRCode.NEED_LOGIN.getCode(), SRCode.NEED_LOGIN.getDesc());
+        }
+        Long userId = ((User) session.getAttribute(Const.CURRENT_USER)).getId();
+        List<Order> orderList = orderMapper.selectList(new QueryWrapper<Order>().eq("user_id", userId));
+        Page<OrderListVo>  orderListVoPage = new Page<>(pageNum, pageSize);
+        List<OrderListVo> orderListVo = Lists.newArrayList();
+        for (Order order : orderList) {
+            orderListVo.add(getOrderListVo(order));
+        }
+        IPage<OrderListVo> productIPage = orderListVoPage.setRecords(orderListVo);
+
+        return SR.ok("查询成功", productIPage);
+    }
+
+    /**
+     * 获取订单列表页
+     *
+     * @param order 订单
+     * @return
+     */
+    private OrderListVo getOrderListVo(Order order) {
+        List<OrderItem> orderItemList = orderItemMapper.selectList(new QueryWrapper<OrderItem>().eq("order_no", order.getOrderNo()));
+        List<OrderItemVo> orderItemVoList = Lists.newArrayList();
+        for (OrderItem orderItem : orderItemList) {
+            orderItemVoList.add(getOrderItemVo(orderItem));
+        }
+
+        OrderListVo orderListVo = OrderListVo.builder()
+                .payment(order.getPayment())
+                .status(order.getStatus())
+                .imageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"))
+                .orderItemVoList(orderItemVoList)
+                .build();
+
+        return orderListVo;
+
     }
 }
