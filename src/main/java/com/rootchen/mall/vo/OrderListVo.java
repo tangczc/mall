@@ -22,7 +22,7 @@ public class OrderListVo {
 
 
     @ApiModelProperty("订单状态")
-    private Integer status;
+    private String status;
 
     @ApiModelProperty("订单明细")
     private List<OrderItemVo> orderItemVoList;

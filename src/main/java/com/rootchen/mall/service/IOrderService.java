@@ -50,6 +50,15 @@ public interface IOrderService {
      * @param pageSize 总页数
      * @return
      */
-    SR getOrderList(HttpSession session, Integer pageNum, Integer pageSize);
+    SR getOrderList(HttpSession session, int pageNum, int pageSize);
+
+    /**
+     * 获取订单详情
+     *
+     * @param session     session
+     * @param orderNumber 订单号
+     * @return
+     */
+    SR getOrderDetail(HttpSession session, Long orderNumber);
 
 }

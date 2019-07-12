@@ -4,10 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
-import com.rootchen.mall.common.CheckUser;
-import com.rootchen.mall.common.Const;
-import com.rootchen.mall.common.SR;
-import com.rootchen.mall.common.SRCode;
+import com.rootchen.mall.common.*;
 import com.rootchen.mall.entity.*;
 import com.rootchen.mall.mapper.*;
 import com.rootchen.mall.service.IOrderService;
@@ -368,20 +365,19 @@ public class OrderServiceImpl implements IOrderService {
      * @return
      */
     @Override
-    public SR<IPage<OrderListVo>> getOrderList(HttpSession session, Integer pageNum, Integer pageSize) {
+    public SR<IPage> getOrderList(HttpSession session, int pageNum, int pageSize) {
         if (!CheckUser.isLoginSuccess(session)) {
             return SR.error(SRCode.NEED_LOGIN.getCode(), SRCode.NEED_LOGIN.getDesc());
         }
+        Page page = new Page<>(pageNum, pageSize);
         Long userId = ((User) session.getAttribute(Const.CURRENT_USER)).getId();
-        List<Order> orderList = orderMapper.selectList(new QueryWrapper<Order>().eq("user_id", userId));
-        Page<OrderListVo>  orderListVoPage = new Page<>(pageNum, pageSize);
+        List<Order> orderList = orderMapper.selectOrderListByUserId(page,userId);
         List<OrderListVo> orderListVo = Lists.newArrayList();
         for (Order order : orderList) {
             orderListVo.add(getOrderListVo(order));
         }
-        IPage<OrderListVo> productIPage = orderListVoPage.setRecords(orderListVo);
-
-        return SR.ok("查询成功", productIPage);
+        IPage iPage = page.setRecords(orderListVo);
+        return SR.ok("查询成功", iPage);
     }
 
     /**
@@ -396,15 +392,35 @@ public class OrderServiceImpl implements IOrderService {
         for (OrderItem orderItem : orderItemList) {
             orderItemVoList.add(getOrderItemVo(orderItem));
         }
-
         OrderListVo orderListVo = OrderListVo.builder()
                 .payment(order.getPayment())
-                .status(order.getStatus())
+                .status(Const.OrderStatusEnum.codeOf(order.getStatus()).getValue())
                 .imageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"))
                 .orderItemVoList(orderItemVoList)
                 .build();
-
         return orderListVo;
-
     }
+
+    /**
+     * 获取订单详情
+     *
+     * @param session     session
+     * @param orderNumber 订单号
+     * @return
+     */
+    @Override
+    public SR getOrderDetail(HttpSession session, Long orderNumber) {
+        if (CheckUser.isLoginSuccess(session)) {
+            return SR.error(SRCode.NEED_LOGIN.getCode(), SRCode.NEED_LOGIN.getDesc());
+        }
+        Long userId = ((User) session.getAttribute(Const.CURRENT_USER)).getId();
+        Order order = orderMapper.selectByUserIdAndOrderNumber(userId, orderNumber);
+        if (order == null) {
+            return SR.errorMsg("该订单不存在");
+        }
+        List<OrderItem> orderItemList = orderItemMapper.selectOrderItemByOrderNoAndUserId(orderNumber, userId);
+        OrderVo orderVo = getOrderVo(order, orderItemList);
+        return SR.ok(orderVo);
+    }
+
 }

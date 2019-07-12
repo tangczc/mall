@@ -4,7 +4,6 @@ package com.rootchen.mall.controller.portal;
 import com.rootchen.mall.common.SR;
 import com.rootchen.mall.service.IOrderService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +36,7 @@ public class OrderController {
     }
 
     @RequestMapping(value = "cancel.do", method = RequestMethod.GET)
-    @ApiModelProperty(value = "取消", notes = "取消订单")
+    @ApiOperation(value = "取消", notes = "取消订单")
     public SR cancel(HttpSession session, @RequestParam("orderNumber") Long orderNumber) {
         return iOrderService.cancel(session, orderNumber);
     }
@@ -50,7 +49,13 @@ public class OrderController {
 
     @RequestMapping(value = "order_list", method = RequestMethod.GET)
     @ApiOperation(value = "查询", notes = "用户订单列表")
-    public SR getOrderList(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum, @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
+    public SR getOrderList(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "10") int pageSize) {
         return iOrderService.getOrderList(session, pageNum, pageSize);
+    }
+
+    @RequestMapping(value = "order_detail",method = RequestMethod.GET)
+    @ApiOperation(value = "查询",notes = "获取订单详情")
+    public SR getOrderDetail(HttpSession session,@RequestParam("orderNumber") Long orderNumber){
+        return iOrderService.getOrderDetail(session,orderNumber);
     }
 }

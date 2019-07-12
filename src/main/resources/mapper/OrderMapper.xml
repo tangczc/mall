@@ -13,4 +13,9 @@
         from mall_order
         where user_id = #{userId} and order_no = #{orderNumber} and deleted = 0
     </select>
+    <select id="selectOrderListByUserId" resultType="com.rootchen.mall.entity.Order">
+        select <include refid="Base_Column_Lists"></include>
+        from mall_order
+        where  user_id = #{userId} and deleted = 0
+    </select>
 </mapper>
