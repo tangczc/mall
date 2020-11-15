@@ -8,12 +8,9 @@ import com.rootchen.mall.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @description: 管理员前端控制器
@@ -29,8 +26,8 @@ public class UserManagerController {
 
     @RequestMapping(value = "login.do", method = RequestMethod.POST)
     @ApiOperation(value = "登录", notes = "用户登录")
-    public SR login(@RequestBody UserLoginParams userLoginParams, HttpSession session) {
-        SR response = iUserService.login(userLoginParams, session);
+    public SR login(@RequestBody UserLoginParams userLoginParams, HttpServletRequest request) {
+        SR response = iUserService.login(userLoginParams, request.getSession());
         if (!response.success()) {
             return response;
         }
@@ -40,4 +37,13 @@ public class UserManagerController {
         }
         return response;
     }
+    @PostMapping(value = "logout.do")
+    @ApiOperation(value = "登出",notes = "退出登陆")
+    public SR logout(HttpServletRequest request)
+    {
+        request.getSession().removeAttribute(Const.CURRENT_USER);
+        return SR.okMsg("退出成功");
+    }
+
+
 }

@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author LC
@@ -24,22 +23,22 @@ import javax.servlet.http.HttpSession;
  */
 @RestController
 @RequestMapping("/api/pay-info/")
-@Api(value = "/api/pay-info/" ,description = "支付")
+@Api(value = "/api/pay-info/", description = "支付")
 public class PayInfoController {
 
     @Autowired
     private IPayInfoService iPayInfoService;
 
-    @RequestMapping(value = "pay.do",method = RequestMethod.POST)
-    @ApiModelProperty(value = "支付",notes = "支付宝支付")
-    public SR aliPay(HttpSession session, HttpServletRequest request, @RequestParam("orderNumber") Long orderNumber){
-        return iPayInfoService.aliPay(session,request,orderNumber);
+    @RequestMapping(value = "pay.do", method = RequestMethod.POST)
+    @ApiModelProperty(value = "支付", notes = "支付宝支付")
+    public SR aliPay(HttpServletRequest request, @RequestParam("orderNumber") Long orderNumber) {
+        return iPayInfoService.aliPay(request.getSession(), request, orderNumber);
     }
 
 
-    @RequestMapping(value = "pay_status.do",method = RequestMethod.GET)
-    @ApiModelProperty(value = "查询",notes = "查询支付状态")
-    public SR checkPayStatus(HttpSession session,Long orderNumber){
-        return iPayInfoService.checkPayStatus(session,orderNumber);
+    @RequestMapping(value = "pay_status.do", method = RequestMethod.GET)
+    @ApiModelProperty(value = "查询", notes = "查询支付状态")
+    public SR checkPayStatus(HttpServletRequest request, Long orderNumber) {
+        return iPayInfoService.checkPayStatus(request.getSession(), orderNumber);
     }
 }

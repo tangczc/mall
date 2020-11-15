@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -31,26 +31,26 @@ public class CategoryManageController {
 
     @RequestMapping(value = "add_category.do", method = RequestMethod.POST)
     @ApiOperation(value = "添加", notes = "添加商品分类")
-    public SR addCategory(HttpSession session, @RequestParam(value = "categoryName") String categoryName, @RequestParam(value = "parentId", defaultValue = "0") Integer parentId) {
-        return iCategoryService.addCategory(session, categoryName, parentId);
+    public SR addCategory(HttpServletRequest request, @RequestParam(value = "categoryName") String categoryName, @RequestParam(value = "parentId", defaultValue = "0") Integer parentId) {
+        return iCategoryService.addCategory(request.getSession(), categoryName, parentId);
     }
 
     @RequestMapping(value = "update_category.do", method = RequestMethod.POST)
     @ApiOperation(value = "修改", notes = "更新商品分类名称")
-    public SR updateCategory(HttpSession session, @RequestParam(value = "categoryId") Long categoryId, @RequestParam(value = "categoryName") String categoryName) {
-        return iCategoryService.updateCategoryName(session, categoryId, categoryName);
+    public SR updateCategory(HttpServletRequest request, @RequestParam(value = "categoryId") Long categoryId, @RequestParam(value = "categoryName") String categoryName) {
+        return iCategoryService.updateCategoryName(request.getSession(), categoryId, categoryName);
     }
 
     @RequestMapping(value = "get_category.do", method = RequestMethod.GET)
     @ApiOperation(value = "查询", notes = "查询父节点下同一级子节点信息")
-    public SR getChildrenCategory(HttpSession session, @RequestParam(value = "parentId", defaultValue = "0") Integer parentId) {
-        return iCategoryService.getCategory(session, parentId);
+    public SR getChildrenCategory(HttpServletRequest request, @RequestParam(value = "parentId", defaultValue = "0") Integer parentId) {
+        return iCategoryService.getCategory(request.getSession(), parentId);
     }
 
     @RequestMapping(value = "get_deep_category.do", method = RequestMethod.GET)
     @ApiOperation(value = "查询", notes = "递归查询父节点下的所有子节点信息")
-    public SR getDeepCategory(HttpSession session, @RequestParam(value = "categoryId", defaultValue = "0") Long categoryId) {
-        SR sr = CheckUser.checkUser(session);
+    public SR getDeepCategory(HttpServletRequest request, @RequestParam(value = "categoryId", defaultValue = "0") Long categoryId) {
+        SR sr = CheckUser.checkUser(request.getSession());
         if (!sr.success()) {
             return sr;
         }

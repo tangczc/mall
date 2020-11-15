@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -31,31 +31,31 @@ public class OrderController {
 
     @RequestMapping(value = "create.do", method = RequestMethod.GET)
     @ApiOperation(value = "创建", notes = "创建订单")
-    public SR create(HttpSession session, @RequestParam("shippingId") Long shippingId) {
-        return iOrderService.create(session, shippingId);
+    public SR create(HttpServletRequest request, @RequestParam("shippingId") Long shippingId) {
+        return iOrderService.create(request.getSession(), shippingId);
     }
 
     @RequestMapping(value = "cancel.do", method = RequestMethod.GET)
     @ApiOperation(value = "取消", notes = "取消订单")
-    public SR cancel(HttpSession session, @RequestParam("orderNumber") Long orderNumber) {
-        return iOrderService.cancel(session, orderNumber);
+    public SR cancel(HttpServletRequest request, @RequestParam("orderNumber") Long orderNumber) {
+        return iOrderService.cancel(request.getSession(), orderNumber);
     }
 
     @RequestMapping(value = "get_order_cart_product.do", method = RequestMethod.GET)
     @ApiOperation(value = "获取购物车产品", notes = "购物车明细")
-    public SR getOrderCartProduct(HttpSession session, Long orderNumber) {
-        return iOrderService.getOrderCartProduct(session, orderNumber);
+    public SR getOrderCartProduct(HttpServletRequest request, Long orderNumber) {
+        return iOrderService.getOrderCartProduct(request.getSession(), orderNumber);
     }
 
     @RequestMapping(value = "order_list", method = RequestMethod.GET)
     @ApiOperation(value = "查询", notes = "用户订单列表")
-    public SR getOrderList(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "10") int pageSize) {
-        return iOrderService.getOrderList(session, pageNum, pageSize);
+    public SR getOrderList(HttpServletRequest request, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum, @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        return iOrderService.getOrderList(request.getSession(), pageNum, pageSize);
     }
 
-    @RequestMapping(value = "order_detail",method = RequestMethod.GET)
-    @ApiOperation(value = "查询",notes = "获取订单详情")
-    public SR getOrderDetail(HttpSession session,@RequestParam("orderNumber") Long orderNumber){
-        return iOrderService.getOrderDetail(session,orderNumber);
+    @RequestMapping(value = "order_detail", method = RequestMethod.GET)
+    @ApiOperation(value = "查询", notes = "获取订单详情")
+    public SR getOrderDetail(HttpServletRequest request, @RequestParam("orderNumber") Long orderNumber) {
+        return iOrderService.getOrderDetail(request.getSession(), orderNumber);
     }
 }

@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -28,26 +28,26 @@ public class ShippingController {
 
     @RequestMapping(value = "add_shipping.do", method = RequestMethod.POST)
     @ApiOperation(value = "添加", notes = "添加收获地址")
-    public SR addShipping(HttpSession session, @RequestBody ShippingParams shippingParams) {
-        return iShippingService.addShipping(session, shippingParams);
+    public SR addShipping(HttpServletRequest request, @RequestBody ShippingParams shippingParams) {
+        return iShippingService.addShipping(request.getSession(), shippingParams);
     }
 
     @RequestMapping(value = "list_shipping.do", method = RequestMethod.GET)
     @ApiOperation(value = "查询", notes = "收获地址列表")
-    public SR showShipping(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+    public SR showShipping(HttpServletRequest request, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
-        return iShippingService.showShipping(session, pageNum, pageSize);
+        return iShippingService.showShipping(request.getSession(), pageNum, pageSize);
     }
 
     @RequestMapping(value = "update_shipping.do", method = RequestMethod.POST)
     @ApiOperation(value = "更新", notes = "更新收获地址")
-    public SR updateShipping(HttpSession session, @RequestBody ShippingParams shippingParams) {
-        return iShippingService.updateShipping(session, shippingParams);
+    public SR updateShipping(HttpServletRequest request, @RequestBody ShippingParams shippingParams) {
+        return iShippingService.updateShipping(request.getSession(), shippingParams);
     }
 
-    @RequestMapping(value = "show_shipping.do",method = RequestMethod.GET)
-    @ApiOperation(value = "查询",notes = "收获地址详情")
-    public SR showShipping(HttpSession session, @RequestParam("shippingId") Long shippingId){
-        return iShippingService.showShippingInfo(session,shippingId);
+    @RequestMapping(value = "show_shipping.do", method = RequestMethod.GET)
+    @ApiOperation(value = "查询", notes = "收获地址详情")
+    public SR showShipping(HttpServletRequest request, @RequestParam("shippingId") Long shippingId) {
+        return iShippingService.showShippingInfo(request.getSession(), shippingId);
     }
 }
