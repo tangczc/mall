@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/product/")
-@Api(value = "/api/product/", description = "前台产品信息")
+@Api(value = "/api/product/", tags = {"前台产品信息"})
 public class ProductController {
     @Autowired
     IProductService iProductService;

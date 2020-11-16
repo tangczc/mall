@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/api/cart/")
-@Api(value = "/api/cart/", description = "购物车信息")
+@Api(value = "/api/cart/", tags = {"购物车信息"})
 public class CartController {
     @Autowired
     private ICartService iCartService;

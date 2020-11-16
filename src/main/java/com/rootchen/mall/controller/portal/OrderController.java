@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/api/order/")
-@Api(value = "/api/order/", description = "订单信息")
+@Api(value = "/api/order/", tags = {"订单信息"})
 public class OrderController {
 
     @Autowired

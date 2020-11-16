@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/api/shipping/")
-@Api(value = "/api/shipping/", description = "收货地址")
+@Api(value = "/api/shipping/", tags = {"收货地址"})
 public class ShippingController {
     @Autowired
     private IShippingService iShippingService;

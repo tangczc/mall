@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/api/manage_category/")
-@Api(value = "/api/manage_category/", description = "商品信息")
+@Api(value = "/api/manage_category/", tags = {"商品信息"})
 public class CategoryManageController {
     @Autowired
     private ICategoryService iCategoryService;

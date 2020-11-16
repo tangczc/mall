@@ -1,5 +1,6 @@
 package com.rootchen.mall.controller.backend;
 
+import com.rootchen.mall.common.CheckUser;
 import com.rootchen.mall.common.Const;
 import com.rootchen.mall.common.SR;
 import com.rootchen.mall.entity.User;
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/api/manage_user/")
-@Api(value = "/api/manage_user/", description = "管理员用户信息")
+@Api(value = "/api/manage_user/", tags = {"管理员用户信息"})
 public class UserManagerController {
     @Autowired
     private IUserService iUserService;
@@ -41,6 +42,10 @@ public class UserManagerController {
     @ApiOperation(value = "登出",notes = "退出登陆")
     public SR logout(HttpServletRequest request)
     {
+        SR sr = CheckUser.checkUser(request.getSession());
+        if (!sr.success()) {
+            return sr;
+        }
         request.getSession().removeAttribute(Const.CURRENT_USER);
         return SR.okMsg("退出成功");
     }

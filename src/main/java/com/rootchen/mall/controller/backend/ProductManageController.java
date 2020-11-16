@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RestController
 @RequestMapping("/api/manage_product/")
-@Api(value = "/api/manage_product/", description = "产品信息")
+@Api(value = "/api/manage_product/", tags = {"产品信息"})
 public class ProductManageController {
     @Autowired
     private IProductService iProductService;
